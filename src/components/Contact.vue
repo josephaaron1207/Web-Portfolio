@@ -44,7 +44,8 @@
                 <button type="submit" class="submit-btn btn-custom" data-bs-toggle="modal" data-bs-target="#myModal" :disabled="isLoading">{{isLoading ? "Sending..." : "Submit"}}</button>
 
                 <div class="d-flex justify-content-end mt-2">
-                    <div ref="recaptchaContainer"></div>
+                    <div v-if="recaptchaLoaded" ref="recaptchaContainer"></div>
+                    <div v-else>Loading reCAPTCHA...</div>
                 </div>
               </div>
             </div>
@@ -63,6 +64,7 @@
 
     const notyf = new Notyf();
     const WEB3FORMS_ACCESS_KEY = "31457fb4-8955-4f56-9efd-7684210a1b64";
+    const SITE_KEY = '6LdgtZIrAAAAAG7QHntHbxhxUWFOHJQACKCfdyiZ'; // Replace with your site key
 
     const subject = "New message from portfolio contact form";
 
@@ -71,51 +73,33 @@
     const message = ref("");
 
     const isLoading = ref(false);
-
-    const submitForm = async () => {
-        // Set the loading state to true.
-        if ( !recaptchaToken.value){
-            notyf.error('Please verify that you are not a robot.');
-            return;
-        }
-        isLoading.value = true;
-        try{
-
-    const response = await fetch("https://api.web3forms.com/submit", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Accept: "application/json",
-                },
-                body: JSON.stringify({
-                    access_key: WEB3FORMS_ACCESS_KEY,
-                    subject: subject,
-                    name: name.value,
-                    email: email.value,
-                    message: message.value,
-                }),
-            });
-            const result = await response.json();
-            if (result.success) {
-                console.log(result);
-                // Set the loading state to false.
-                isLoading.value = false;
-                notyf.success("Message Sent!");
-                }
-            } catch (error) {
-                    console.log(error);
-                    isLoading.value = false;
-                    notyf.error("Failed to send message.");
-                } finally {
-                    resetRecaptcha();
-                }
-            }
-
-    const SITE_KEY = '6LdgtZIrAAAAAG7QHntHbxhxUWFOHJQACKCfdyiZ';  // Replace with your site key
+    const recaptchaLoaded = ref(false); // New state to track if reCAPTCHA script is loaded
 
     const recaptchaContainer = ref(null);
     const recaptchaWidgetId = ref(null);
     const recaptchaToken = ref('');
+
+    // Function to load the reCAPTCHA script dynamically
+    function loadRecaptchaScript() {
+        return new Promise((resolve, reject) => {
+            if (window.grecaptcha) {
+                resolve();
+                return;
+            }
+
+            const script = document.createElement('script');
+            script.src = `https://www.google.com/recaptcha/api.js?onload=vueRecaptchaOnload&render=explicit`;
+            script.async = true;
+            script.defer = true;
+            script.onerror = reject;
+            document.head.appendChild(script);
+
+            // Create a global callback function for reCAPTCHA to call once it's loaded
+            window.vueRecaptchaOnload = () => {
+                resolve();
+            };
+        });
+    }
 
     // Callback called by reCAPTCHA when successful
     function onRecaptchaSuccess(token) {
@@ -129,8 +113,8 @@
 
     // Function to render the reCAPTCHA widget
     function renderRecaptcha() {
-      if (!window.grecaptcha) {
-        console.error('reCAPTCHA not loaded');
+      if (!window.grecaptcha || !recaptchaContainer.value) {
+        console.error('reCAPTCHA API or container not ready for rendering.');
         return;
       }
 
@@ -140,30 +124,77 @@
         callback: onRecaptchaSuccess,
         'expired-callback': onRecaptchaExpired,
       });
+      recaptchaLoaded.value = true; // Set to true once rendered
     }
 
-    // Function to reset reCAPTCHA 
+    // Function to reset reCAPTCHA
     function resetRecaptcha() {
-      if (recaptchaWidgetId.value !== null) {
+      if (recaptchaWidgetId.value !== null && window.grecaptcha) {
         window.grecaptcha.reset(recaptchaWidgetId.value);
         recaptchaToken.value = '';
       }
     }
 
-    onMounted(() => {
-
-    const interval = setInterval(() => {
-        if (window.grecaptcha && window.grecaptcha.render) {
-          renderRecaptcha();
-          clearInterval(interval);
+    const submitForm = async () => {
+        if (!recaptchaToken.value) {
+            notyf.error('Please verify that you are not a robot.');
+            return;
         }
-      }, 100);
+        isLoading.value = true;
+        try {
+            const response = await fetch("https://api.web3forms.com/submit", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
+                },
+                body: JSON.stringify({
+                    access_key: WEB3FORMS_ACCESS_KEY,
+                    subject: subject,
+                    name: name.value,
+                    email: email.value,
+                    message: message.value,
+                    "g-recaptcha-response": recaptchaToken.value, // Include reCAPTCHA token
+                }),
+            });
+            const result = await response.json();
+            if (result.success) {
+                console.log(result);
+                isLoading.value = false;
+                notyf.success("Message Sent!");
+                name.value = ''; // Clear form fields
+                email.value = '';
+                message.value = '';
+            } else {
+                notyf.error("Failed to send message: " + (result.message || "Unknown error"));
+            }
+        } catch (error) {
+            console.error("Submission error:", error);
+            isLoading.value = false;
+            notyf.error("Failed to send message.");
+        } finally {
+            resetRecaptcha();
+        }
+    }
 
-      onBeforeUnmount(() => {
-        clearInterval(interval);
-      });
+    onMounted(async () => {
+        try {
+            await loadRecaptchaScript();
+            // Give a small delay to ensure the DOM element is fully rendered and accessible
+            // before grecaptcha.render is called.
+            setTimeout(() => {
+                renderRecaptcha();
+            }, 50); // Small delay
+        } catch (error) {
+            console.error("Failed to load reCAPTCHA script:", error);
+            notyf.error("Failed to load reCAPTCHA. Please try refreshing the page.");
+        }
     });
 
+    onBeforeUnmount(() => {
+        // Clean up global callback if necessary, though not strictly required for this pattern
+        delete window.vueRecaptchaOnload;
+    });
 
 </script>
 
