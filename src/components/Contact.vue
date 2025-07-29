@@ -119,4 +119,118 @@ const submitForm = async () => {
         "Content-Type": "application/json",
         Accept: "application/json",
       },
-      body:
+      body: JSON.stringify({
+        access_key: WEB3FORMS_ACCESS_KEY,
+        subject,
+        name: name.value,
+        email: email.value,
+        message: message.value,
+      }),
+    });
+
+    const result = await response.json();
+
+    if (result.success) {
+      notyf.success("Message Sent!");
+      name.value = "";
+      email.value = "";
+      message.value = "";
+    }
+  } catch (error) {
+    notyf.error("Failed to send message.");
+  } finally {
+    isLoading.value = false;
+    resetRecaptcha();
+  }
+};
+
+// reCAPTCHA setup
+const SITE_KEY = "6LdgtZIrAAAAAG7QHntHbxhxUWFOHJQACKCfdyiZ";
+
+function onRecaptchaSuccess(token) {
+  recaptchaToken.value = token;
+}
+function onRecaptchaExpired() {
+  recaptchaToken.value = "";
+}
+function renderRecaptcha() {
+  if (!window.grecaptcha) return;
+  recaptchaWidgetId.value = window.grecaptcha.render(recaptchaContainer.value, {
+    sitekey: SITE_KEY,
+    size: "normal",
+    callback: onRecaptchaSuccess,
+    "expired-callback": onRecaptchaExpired,
+  });
+}
+function resetRecaptcha() {
+  if (recaptchaWidgetId.value !== null) {
+    window.grecaptcha.reset(recaptchaWidgetId.value);
+    recaptchaToken.value = "";
+  }
+}
+
+onMounted(() => {
+  const interval = setInterval(() => {
+    if (window.grecaptcha && window.grecaptcha.render) {
+      renderRecaptcha();
+      clearInterval(interval);
+    }
+  }, 100);
+  onBeforeUnmount(() => clearInterval(interval));
+});
+</script>
+
+<style scoped>
+.contact-form input,
+.contact-form textarea {
+  background-color: #f8f9fa;
+  border: 1px solid #ced4da;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  border-color: #20c997;
+  box-shadow: 0 0 8px rgba(32, 201, 151, 0.3);
+  outline: none;
+}
+
+/* Submit Button */
+.submit-btn {
+  transition: background-color 0.3s, transform 0.3s;
+}
+.submit-btn:hover {
+  background-color: #20c997 !important;
+  transform: translateY(-2px);
+}
+
+/* Social Icons */
+.social-icons {
+  display: flex;
+  gap: 1rem;
+}
+.social-icon {
+  width: 55px;
+  height: 55px;
+  font-size: 1.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: #fff !important;
+  transition: transform 0.3s, background-color 0.3s;
+}
+.social-icon.linkedin {
+  background-color: #0e76a8;
+}
+.social-icon.gitlab {
+  background-color: #fca326;
+}
+.social-icon.github {
+  background-color: #333;
+}
+.social-icon:hover {
+  transform: scale(1.15);
+  background-color: #20c997 !important;
+}
+</style>
