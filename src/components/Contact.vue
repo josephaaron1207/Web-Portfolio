@@ -85,7 +85,7 @@ export default {
       WEB3FORMS_ACCESS_KEY: "951c837b-2583-4a17-b896-758c5a65320a", // Your Web3Forms Access Key
       subject: "New message from portfolio contact form",
       notyf: null, // Notyf instance will be initialized in mounted hook
-      SITE_KEY: '6LdgtZIrAAAAAG7QHntHbxhxUWFOHJQACKCfdyiZ', // Your reCAPTCHA v2 Site Key
+      SITE_KEY: '6LeA6ZIrAAAAAJI9Vih6OgWXw10dAqShbVyRH7rd', // Your reCAPTCHA v2 Site Key
       recaptchaWidgetId: null, // To store the ID of the rendered reCAPTCHA widget
       recaptchaToken: '', // To store the reCAPTCHA token after successful verification
     };
