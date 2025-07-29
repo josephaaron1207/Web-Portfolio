@@ -61,6 +61,9 @@
                 <button type="submit" class="submit-btn btn-primary-custom" :disabled="isLoading">{{isLoading ? "Sending..." : "Send Message"}}</button>
               </div>
             </form>
+            <div class="d-flex justify-content-end mt-2">
+                                <div ref="recaptchaContainer"></div>
+                            </div>
           </div>
         </div>
       </div>
