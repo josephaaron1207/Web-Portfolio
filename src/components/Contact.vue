@@ -72,8 +72,8 @@
 </template>
 
 <script>
-import { Notyf } from 'notyf';
-import 'notyf/notyf.min.css';
+// Removed: import { Notyf } from 'notyf';
+// Removed: import 'notyf/notyf.min.css';
 
 export default {
   name: 'Contact',
@@ -96,18 +96,24 @@ export default {
     };
   },
   mounted() {
-    // Initialize Notyf for notifications
-    this.notyf = new Notyf({
-      duration: 3000,
-      position: {
-        x: 'right',
-        y: 'top',
-      },
-      types: [
-        { type: 'success', background: '#5cb85c', icon: '<i class="fas fa-check-circle"></i>' },
-        { type: 'error', background: '#d9534f', icon: '<i class="fas fa-times-circle"></i>' }
-      ]
-    });
+    // Initialize Notyf for notifications using the global Notyf object
+    // Ensure Notyf is loaded via CDN in index.html for this to work
+    if (window.Notyf) {
+      this.notyf = new window.Notyf({
+        duration: 3000,
+        position: {
+          x: 'right',
+          y: 'top',
+        },
+        types: [
+          { type: 'success', background: '#5cb85c', icon: '<i class="fas fa-check-circle"></i>' },
+          { type: 'error', background: '#d9534f', icon: '<i class="fas fa-times-circle"></i>' }
+        ]
+      });
+    } else {
+      console.error('Notyf is not loaded. Please ensure the Notyf CDN script is included in index.html.');
+    }
+
 
     // --- reCAPTCHA Integration: Render widget once grecaptcha is loaded ---
     // This interval checks if the grecaptcha object is available (meaning the script has loaded)
