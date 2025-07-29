@@ -1,36 +1,36 @@
 [
   {
-    "image": "../../images/myProjects/1_project.svg",
+    "image": "/images/myProjects/1_project.svg",
     "title": "E-commerce API Documentation",
     "description": "Dynamic E-Commerce Workflow Management.",
     "link": "https://www.google.com"
   },
   {
-    "image": "../../images/myProjects/2_project.svg",
+    "image": "/images/myProjects/2_project.svg",
     "title": "Course Booking API Documentation",
     "description": "RESTful API for managing course enrollment.",
     "link": "https://www.google.com"
   },
   {
-    "image": "../../images/myProjects/3_project.svg",
+    "image": "/images/myProjects/3_project.svg",
     "title": "Course Booking App",
     "description": "A MERN-stack course enrollment system for students.",
     "link": "https://www.google.com"
   },
   {
-    "image": "../../images/myProjects/4_project.svg",
+    "image": "/images/myProjects/4_project.svg",
     "title": "E-commerce App",
     "description": "MERN E-Commerce Platform. The platform provides a.",
     "link": "https://www.google.com"
   },
   {
-    "image": "../../images/myProjects/5_project.svg",
+    "image": "/images/myProjects/5_project.svg",
     "title": "Airline Booking System Mockup",
     "description": "Side Project: Conceptual design of an airline booking.",
     "link": "https://www.google.com"
   },
   {
-    "image": "../../images/myProjects/6_project.svg",
+    "image": "/images/myProjects/6_project.svg",
     "title": "Airline Booking System Prototype",
     "description": "Side Project: Interactive prototype simulating an airline.",
     "link": "https://www.google.com"
