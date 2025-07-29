@@ -1,13 +1,7 @@
 <template>
   <div class="col-lg-4 col-md-6">
     <div class="card portfolio-item">
-      <img :src="project.image" class="card-img-top" :alt="project.title" />
-      <div class="card-body">
-        <h5 class="card-title">{{ project.title }}</h5>
-        <p class="card-text">{{ project.description }}</p>
-        <a :href="project.link" class="btn btn-sm btn-outline-primary rounded-pill" target="_blank">View Details</a>
-      </div>
-    </div>
+      <img :src="image" class="card-img-top" :alt="title"> </div>
   </div>
 </template>
 
