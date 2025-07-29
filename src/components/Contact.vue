@@ -28,25 +28,20 @@
           <div class="col-lg-8">
             <div class="contact-methods mb-5 d-flex flex-wrap justify-content-center">
               <div id="phonenum" class="contact-item me-4 mb-3 mb-md-0">
-                <a href="https://www.gmail.com" class="text-decoration-none text-success">
-                  <a href="https://www.gmail.com" class="text-decoration-none text-success">
-                    <i class="fa-solid fa-envelope contact-icon-large d-block p-5 mx-5 text-success"></i>
-                    <span class="contact-text">Email</span>
-                  </a>
+                <a href="mailto:josephaarond.bernardo@gmail.com" class="text-decoration-none text-success">
+                  <i class="fa-solid fa-envelope contact-icon-large d-block p-5 mx-5 text-success"></i>
+                  <span class="contact-text">Email</span>
                 </a>
               </div>
               <div id="emailadd" class="contact-item">
-                <a href="https://www.gmail.com" class="text-decoration-none text-success">
-                  <a href="https://www.google.com" class="text-decoration-none text-success">
-                    <i class="fa-solid fa-phone contact-icon-large d-block p-5 mx-5 text-success"></i>
-                    <span class="contact-text">Phone Number</span>
-                  </a>
+                <a href="tel:+639472600416" class="text-decoration-none text-success">
+                  <i class="fa-solid fa-phone contact-icon-large d-block p-5 mx-5 text-success"></i>
+                  <span class="contact-text">Phone Number</span>
                 </a>
               </div>
             </div>
           </div>
         </div>
-        <div class="row justify-content-center text-center"></div>
         <div class="row justify-content-center mt-5">
           <div class="col-lg-8">
             <form @submit.prevent="submitForm">
@@ -59,7 +54,10 @@
               <div class="mb-3">
                 <textarea class="form-control rounded-4" id="message" rows="5" v-model="form.message" placeholder="Your Message" required></textarea>
               </div>
-              <div class="text-center">
+              <div class="d-flex justify-content-end mt-2">
+                  <div ref="recaptchaContainer"></div>
+              </div>
+              <div class="text-center mt-3">
                 <button type="submit" class="submit-btn btn-primary-custom" :disabled="isLoading">{{isLoading ? "Sending..." : "Send Message"}}</button>
               </div>
             </form>
@@ -71,28 +69,29 @@
 </template>
 
 <script>
-// No need for 'ref' if sticking purely to Options API's data()
 import { Notyf } from 'notyf';
-import 'notyf/notyf.min.css'; // Keep this here or in main.js as discussed previously
+import 'notyf/notyf.min.css';
 
 export default {
   name: 'Contact',
   data() {
     return {
-      // All reactive data goes here
       form: {
         name: '',
         email: '',
         message: '',
       },
       isLoading: false,
-      WEB3FORMS_ACCESS_KEY: "951c837b-2583-4a17-b896-758c5a65320a",
+      WEB3FORMS_ACCESS_KEY: "951c837b-2583-4a17-b896-758c5a65320a", // Your Web3Forms Access Key
       subject: "New message from portfolio contact form",
-      notyf: null, // Will initialize in mounted hook
+      notyf: null, // Notyf instance will be initialized in mounted hook
+      SITE_KEY: '6LdgtZIrAAAAAG7QHntHbxhxUWFOHJQACKCfdyiZ', // Your reCAPTCHA v2 Site Key
+      recaptchaWidgetId: null, // To store the ID of the rendered reCAPTCHA widget
+      recaptchaToken: '', // To store the reCAPTCHA token after successful verification
     };
   },
   mounted() {
-    // Initialize Notyf here after component is mounted
+    // Initialize Notyf for notifications
     this.notyf = new Notyf({
       duration: 3000,
       position: {
@@ -100,24 +99,86 @@ export default {
         y: 'top',
       },
       types: [
-        {
-          type: 'success',
-          background: '#5cb85c',
-          icon: '<i class="fas fa-check-circle"></i>'
-        },
-        {
-          type: 'error',
-          background: '#d9534f',
-          icon: '<i class="fas fa-times-circle"></i>'
-        }
+        { type: 'success', background: '#5cb85c', icon: '<i class="fas fa-check-circle"></i>' },
+        { type: 'error', background: '#d9534f', icon: '<i class="fas fa-times-circle"></i>' }
       ]
     });
+
+    // --- reCAPTCHA Integration: Render widget once grecaptcha is loaded ---
+    // This interval checks if the grecaptcha object is available (meaning the script has loaded)
+    // and then proceeds to render the reCAPTCHA widget.
+    const interval = setInterval(() => {
+      if (window.grecaptcha && window.grecaptcha.render) {
+        this.renderRecaptcha(); // Call the method to render the widget
+        clearInterval(interval); // Stop the interval once rendered
+      }
+    }, 100); // Check every 100ms
   },
   methods: {
-    // All methods go here
+    /**
+     * Callback function for reCAPTCHA when verification is successful.
+     * The token is received as an argument.
+     * @param {string} token - The reCAPTCHA verification token.
+     */
+    onRecaptchaSuccess(token) {
+      this.recaptchaToken = token; // Store the token in component data
+    },
+
+    /**
+     * Callback function for reCAPTCHA when the token expires.
+     * Clears the stored token.
+     */
+    onRecaptchaExpired() {
+      this.recaptchaToken = ''; // Clear the token
+    },
+
+    /**
+     * Renders the reCAPTCHA widget into the designated container.
+     */
+    renderRecaptcha() {
+      // Ensure the reCAPTCHA container element exists using $refs
+      const recaptchaContainer = this.$refs.recaptchaContainer;
+      if (!recaptchaContainer) {
+        console.error('reCAPTCHA container element not found. Make sure <div ref="recaptchaContainer"></div> exists in your template.');
+        return;
+      }
+      // Ensure grecaptcha object is loaded
+      if (!window.grecaptcha) {
+        console.error('Google reCAPTCHA script not loaded.');
+        return;
+      }
+
+      // Render the reCAPTCHA widget
+      this.recaptchaWidgetId = window.grecaptcha.render(recaptchaContainer, {
+        sitekey: this.SITE_KEY, // Your reCAPTCHA Site Key
+        size: 'normal', // 'normal' or 'compact'
+        callback: this.onRecaptchaSuccess, // Callback for successful verification
+        'expired-callback': this.onRecaptchaExpired, // Callback for expired token
+      });
+    },
+
+    /**
+     * Resets the reCAPTCHA widget, clearing the current token.
+     */
+    resetRecaptcha() {
+      if (this.recaptchaWidgetId !== null) {
+        window.grecaptcha.reset(this.recaptchaWidgetId);
+        this.recaptchaToken = ''; // Also clear the internal token state
+      }
+    },
+
+    /**
+     * Handles the form submission process.
+     * Sends form data and reCAPTCHA token to Web3Forms.
+     */
     async submitForm() {
-      // Access data properties with 'this.'
-      this.isLoading = true;
+      // Prevent form submission if reCAPTCHA hasn't been verified
+      if (!this.recaptchaToken) {
+        this.notyf.error('Please verify that you are not a robot.');
+        return; // Stop the function execution
+      }
+
+      this.isLoading = true; // Show loading state
       try {
         const response = await fetch("https://api.web3forms.com/submit", {
           method: "POST",
@@ -128,30 +189,33 @@ export default {
           body: JSON.stringify({
             access_key: this.WEB3FORMS_ACCESS_KEY,
             subject: this.subject,
-            name: this.form.name, // Access from form object
-            email: this.form.email, // Access from form object
-            message: this.form.message, // Access from form object
+            name: this.form.name,
+            email: this.form.email,
+            message: this.form.message,
+            "g-recaptcha-response": this.recaptchaToken, // Include the reCAPTCHA token
           }),
         });
         const result = await response.json();
 
         if (result.success) {
-          console.log(result);
-          this.isLoading = false;
-          this.notyf.success("Message Sent!"); // Use this.notyf
-          // Clear form fields
+          console.log("Form submission successful:", result);
+          this.notyf.success("Message Sent!");
+          // Clear form fields after successful submission
           this.form.name = '';
           this.form.email = '';
           this.form.message = '';
         } else {
-          console.log(result);
-          this.isLoading = false;
-          this.notyf.error("Failed to send message."); // Use this.notyf
+          // Log the actual error from Web3Forms for debugging
+          console.error("Web3Forms error:", result);
+          this.notyf.error("Failed to send message.");
         }
       } catch (error) {
-        console.log(error);
-        this.isLoading = false;
-        this.notyf.error("Failed to send message."); // Use this.notyf
+        // Log network or other unexpected errors
+        console.error("Form submission error:", error);
+        this.notyf.error("Failed to send message.");
+      } finally {
+        this.isLoading = false; // Always disable loading state
+        this.resetRecaptcha(); // Reset reCAPTCHA regardless of outcome
       }
     }
   }
@@ -159,37 +223,38 @@ export default {
 </script>
 
 <style scoped>
+/* Scoped styles for this component */
 #contact {
-background-color: #343a40;
-border-radius: 40px;
-padding: 80px 0;
-border-bottom: 1px solid #e9ecef;
-color: white;
+  background-color: #343a40;
+  border-radius: 40px;
+  padding: 80px 0;
+  border-bottom: 1px solid #e9ecef;
+  color: white;
 }
 #contact h2 {
-color: #00896f;
-font-weight: 700;
-margin-bottom: 40px;
-text-align: center;
-position: relative;
-padding-bottom: 10px;
+  color: #00896f;
+  font-weight: 700;
+  margin-bottom: 40px;
+  text-align: center;
+  position: relative;
+  padding-bottom: 10px;
 }
 #map {
-color: #343a40;
-background-color: #00896f;
-border-radius: 40px;
+  color: #343a40;
+  background-color: #00896f;
+  border-radius: 40px;
 }
 #map h2 {
-color: #343a40;
+  color: #343a40;
 }
 .contact-icon-large {
-font-size: 5rem; /* Added semicolon here */
-} /* Added closing curly brace here */
+  font-size: 5rem;
+}
 
 /* UI Improvement: Form focus state */
 .form-control:focus {
-border-color: #00896f;
-box-shadow: 0 0 0 0.25rem rgba(0, 137, 111, 0.25);
-background-color: #ffffff;
+  border-color: #00896f;
+  box-shadow: 0 0 0 0.25rem rgba(0, 137, 111, 0.25);
+  background-color: #ffffff;
 }
-</style> ```
+</style>
