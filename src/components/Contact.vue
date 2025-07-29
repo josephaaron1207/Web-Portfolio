@@ -60,7 +60,7 @@ export default {
   data() {
     return {
       recaptchaSiteKey: '6LdgtZIrAAAAAG7QHntHbxhxUWFOHJQACKCfdyiZ', // Your reCAPTCHA site key
-      web3formsAccessKey: '951c837b-2583-4a17-b896-758c5a65320a', // Your Web3Forms access key
+      web3formsAccessKey: 'e220f6ac-f481-48a6-8bb7-1fe43debea16', // Your Web3Forms access key
       recaptchaToken: null,
       messageBox: {
         show: false,
@@ -96,7 +96,7 @@ export default {
     },
     onRecaptchaVerify(token) {
       this.recaptchaToken = token;
-      this.showMessage('reCAPTCHA verified! You can now submit the form.', 'success');
+      this.showMessage('You can now submit the form.', 'success');
       console.log('reCAPTCHA token:', token);
     },
     onRecaptchaExpired() {
