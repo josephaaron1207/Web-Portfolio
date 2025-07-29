@@ -79,3 +79,5 @@ export default {
   color: #0056b3; /* Darker blue on hover for links */
   border-color: #0056b3;
 }
+
+</style>
