@@ -1,7 +1,13 @@
 <template>
   <div class="col-lg-4 col-md-6">
     <div class="card portfolio-item">
-      <img :src="image" class="card-img-top" :alt="title"> </div>
+      <img :src="image" class="card-img-top" :alt="title">
+      <div class="card-body">
+        <h5 class="card-title">{{ title }}</h5>
+        <p class="card-text">{{ description }}</p>
+        <a :href="link" class="btn btn-sm btn-outline-primary rounded-pill" target="_blank">View Details</a>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -9,12 +15,12 @@
 export default {
   name: 'ProjectCard',
   props: {
-    project: {
-      type: Object,
-      required: true,
-    },
-  },
-};
+    image: String, // This prop will receive the image path from projects.json
+    title: String,
+    description: String,
+    link: String
+  }
+}
 </script>
 
 <style scoped>

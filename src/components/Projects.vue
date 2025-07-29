@@ -3,7 +3,14 @@
     <div class="container">
       <h2>My Projects</h2>
       <div class="row g-4">
-        <ProjectCard v-for="(project, index) in projects" :key="index" :project="project" />
+        <ProjectCard
+          v-for="(project, index) in projects"
+          :key="index"
+          :image="project.image"
+          :title="project.title"
+          :description="project.description"
+          :link="project.link"
+        />
       </div>
     </div>
   </section>
@@ -11,21 +18,19 @@
 
 <script>
 import ProjectCard from './ProjectCard.vue';
-import projectsData from '../data/projects.json';
+import projectsData from '../data/projects.json'; // Import the JSON data
 
 export default {
   name: 'Projects',
   components: {
-    ProjectCard,
+    ProjectCard
   },
-  setup() {
-    // Correctly import the data from the JSON file
-    const projects = projectsData;
+  data() {
     return {
-      projects,
+      projects: projectsData // Assign the imported JSON data to your projects array
     };
-  },
-};
+  }
+}
 </script>
 
 <style scoped>
