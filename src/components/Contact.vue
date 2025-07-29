@@ -1,269 +1,263 @@
 <template>
-  <section id="contacts">
-    <div class="container my-5">
+  <div>
+    <div id="map" class="container-fluid">
       <div class="row text-center mb-4">
-        <div class="col-12">
-          <h1>Let's Connect</h1>
+        <div class="col">
+          <h2 class="my-5">Visit Us!</h2>
         </div>
       </div>
-
-      <div class="row flex-column flex-md-row text-center text-md-start">
-        <div class="col-md-6 mb-4 mb-md-0">
+      <div class="row justify-content-center">
+        <div class="col-lg-8 m-4">
           <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3862.0678248443566!2d120.98292817502444!3d14.537552985929287!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397c7f3b895b6c3%3A0x64a9a0e66b1e60b1!2sPara%C3%B1aque%20City%2C%20Metro%20Manila!5e0!3m2!1sen!2sph!4v1722285155609!5m2!1sen!2sph"
-            class="map-frame w-100 rounded"
-            height="450"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15452.43988643541!2d121.00358374543454!3d14.47837411594325!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397ce7de2da5bbd%3A0xc4f1845e91886224!2sSM%20City%20Sucat!5e0!3m2!1sen!2sph!4v1750151542839!5m2!1sen!2sph"
+            width="100%"
+            height="400"
+            style="border: 0"
             allowfullscreen=""
             loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade">
+            referrerpolicy="no-referrer-when-downgrade"
+          >
           </iframe>
-        </div>
-
-        <div class="col-md-6" id="form-col">
-          <form @submit.prevent="submitForm" class="form p-4 rounded text-light">
-            <div class="mb-3">
-              <label for="name" class="form-label">Name</label>
-              <input type="text" v-model="name" class="form-control" id="name" placeholder="Your Name" required>
-            </div>
-            <div class="mb-3">
-              <label for="email" class="form-label">Email address</label>
-              <input type="email" v-model="email" class="form-control" id="email" placeholder="name@example.com" required>
-            </div>
-            <div class="mb-3">
-              <label for="message" class="form-label">Message</label>
-              <textarea v-model="message" class="form-control" id="message" rows="5" required></textarea>
-            </div>
-
-            <div class="d-flex flex-wrap align-items-center justify-content-between">
-              <div class="d-flex gap-3 mb-3">
-                <a href="https://github.com/PeterJayson13" target="_blank"><img src="/images/Github.png" class="img-fluid social-icon" alt="GitHub"></a>
-                <a href="https://gitlab.com/peterbongabong7" target="_blank"><img src="/images/Gitlab.png" class="img-fluid social-icon" alt="GitLab"></a>
-                <a href="https://www.linkedin.com/in/peter-jayson-bongabong-b43793365/" target="_blank"><img src="/images/Linkedin.png" class="img-fluid social-icon" alt="LinkedIn"></a>
-              </div>
-              <div>
-                <button type="submit" class="submit-btn btn-custom" :disabled="isLoading || !recaptchaToken">
-                  {{ isLoading ? "Sending..." : "Submit" }}
-                </button>
-
-                <div class="d-flex justify-content-end mt-2">
-                    <div v-if="recaptchaLoaded" ref="recaptchaContainer"></div>
-                    <div v-else-if="recaptchaScriptLoaded">Loading reCAPTCHA...</div>
-                    <div v-else>Initializing reCAPTCHA...</div>
-                </div>
-              </div>
-            </div>
-          </form>
         </div>
       </div>
     </div>
-  </section>
+    <section id="contact">
+      <div class="container">
+        <h2>Get In Touch</h2>
+        <div class="row justify-content-center text-center mb-4">
+          <div class="col-lg-8">
+            <div class="contact-methods mb-5 d-flex flex-wrap justify-content-center">
+              <div id="phonenum" class="contact-item me-4 mb-3 mb-md-0">
+                <a href="mailto:josephaarond.bernardo@gmail.com" class="text-decoration-none text-success">
+                  <i class="fa-solid fa-envelope contact-icon-large d-block p-5 mx-5 text-success"></i>
+                  <span class="contact-text">Email</span>
+                </a>
+              </div>
+              <div id="emailadd" class="contact-item">
+                <a href="tel:+639472600416" class="text-decoration-none text-success">
+                  <i class="fa-solid fa-phone contact-icon-large d-block p-5 mx-5 text-success"></i>
+                  <span class="contact-text">Phone Number</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-center mt-5">
+          <div class="col-lg-8">
+            <form @submit.prevent="submitForm">
+              <div class="mb-3">
+                <input type="text" v-model="form.name" class="form-control rounded-pill" id="name" placeholder="Your Name" required />
+              </div>
+              <div class="mb-3">
+                <input type="email" v-model="form.email" class="form-control rounded-pill" id="email" placeholder="Your Email" required />
+              </div>
+              <div class="mb-3">
+                <textarea class="form-control rounded-4" id="message" rows="5" v-model="form.message" placeholder="Your Message" required></textarea>
+              </div>
+              <div class="d-flex justify-content-end mt-2">
+                  <div ref="recaptchaContainer"></div>
+              </div>
+              <div class="text-center mt-3">
+                <button type="submit" class="submit-btn btn-primary-custom" :disabled="isLoading">{{isLoading ? "Sending..." : "Send Message"}}</button>
+              </div>
+            </form>
+            <div class="d-flex justify-content-end mt-2">
+                                <div ref="recaptchaContainer"></div>
+                            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
 </template>
 
-<script setup>
-import { ref, onMounted, onBeforeUnmount, watch } from 'vue'; // Import watch
+<script>
 import { Notyf } from 'notyf';
 import 'notyf/notyf.min.css';
 
-const notyf = new Notyf();
-const WEB3FORMS_ACCESS_KEY = "31457fb4-8955-4f56-9efd-7684210a1b64";
-const SITE_KEY = '6LdgtZIrAAAAAG7QHntHbxhxUWFOHJQACKCfdyiZ';
+export default {
+  name: 'Contact',
+  data() {
+    return {
+      form: {
+        name: '',
+        email: '',
+        message: '',
+      },
+      isLoading: false,
+      WEB3FORMS_ACCESS_KEY: "951c837b-2583-4a17-b896-758c5a65320a", // Your Web3Forms Access Key
+      subject: "New message from portfolio contact form",
+      notyf: null, // Notyf instance will be initialized in mounted hook
+      SITE_KEY: '6LdgtZIrAAAAAG7QHntHbxhxUWFOHJQACKCfdyiZ', // Your reCAPTCHA v2 Site Key
+      recaptchaWidgetId: null, // To store the ID of the rendered reCAPTCHA widget
+      recaptchaToken: '', // To store the reCAPTCHA token after successful verification
+    };
+  },
+  mounted() {
+    // Initialize Notyf for notifications
+    this.notyf = new Notyf({
+      duration: 3000,
+      position: {
+        x: 'right',
+        y: 'top',
+      },
+      types: [
+        { type: 'success', background: '#5cb85c', icon: '<i class="fas fa-check-circle"></i>' },
+        { type: 'error', background: '#d9534f', icon: '<i class="fas fa-times-circle"></i>' }
+      ]
+    });
 
-const subject = "New message from portfolio contact form";
+    // --- reCAPTCHA Integration: Render widget once grecaptcha is loaded ---
+    // This interval checks if the grecaptcha object is available (meaning the script has loaded)
+    // and then proceeds to render the reCAPTCHA widget.
+    const interval = setInterval(() => {
+      if (window.grecaptcha && window.grecaptcha.render) {
+        this.renderRecaptcha(); // Call the method to render the widget
+        clearInterval(interval); // Stop the interval once rendered
+      }
+    }, 100); // Check every 100ms
+  },
+  methods: {
+    /**
+     * Callback function for reCAPTCHA when verification is successful.
+     * The token is received as an argument.
+     * @param {string} token - The reCAPTCHA verification token.
+     */
+    onRecaptchaSuccess(token) {
+      this.recaptchaToken = token; // Store the token in component data
+    },
 
-const name = ref("");
-const email = ref("");
-const message = ref("");
+    /**
+     * Callback function for reCAPTCHA when the token expires.
+     * Clears the stored token.
+     */
+    onRecaptchaExpired() {
+      this.recaptchaToken = ''; // Clear the token
+    },
 
-const isLoading = ref(false);
-const recaptchaLoaded = ref(false);
-
-const recaptchaContainer = ref(null);
-const recaptchaWidgetId = ref(null);
-const recaptchaToken = ref('');
-
-window.vueRecaptchaOnload = () => {
-  if (window._recaptchaLoadResolve) {
-    window._recaptchaLoadResolve();
-    delete window._recaptchaLoadResolve;
-  }
-};
-
-let recaptchaScriptLoaded = false;
-
-function loadRecaptchaScript() {
-  return new Promise((resolve, reject) => {
-    if (window.grecaptcha && recaptchaScriptLoaded) {
-      resolve();
-      return;
-    }
-    // Check if script tag is already in DOM to avoid adding multiple times
-    if (document.querySelector(`script[src*="google.com/recaptcha/api.js"]`)) {
-        recaptchaScriptLoaded = true; // Assume it's in the process of loading or already loaded
-        if (window.grecaptcha) { // Already loaded and grecaptcha object exists
-            resolve();
-        } else { // Script tag is there, but grecaptcha not ready yet, set global callback
-            window._recaptchaLoadResolve = resolve;
-        }
+    /**
+     * Renders the reCAPTCHA widget into the designated container.
+     */
+    renderRecaptcha() {
+      // Ensure the reCAPTCHA container element exists using $refs
+      const recaptchaContainer = this.$refs.recaptchaContainer;
+      if (!recaptchaContainer) {
+        console.error('reCAPTCHA container element not found. Make sure <div ref="recaptchaContainer"></div> exists in your template.');
         return;
-    }
-
-    const script = document.createElement('script');
-    script.src = `https://www.google.com/recaptcha/api.js?onload=vueRecaptchaOnload&render=explicit`;
-    script.async = true;
-    script.defer = true;
-    script.onerror = reject;
-    document.head.appendChild(script);
-
-    recaptchaScriptLoaded = true; // Mark as initiated
-    window._recaptchaLoadResolve = resolve; // Store resolve for global callback
-  });
-}
-
-function onRecaptchaSuccess(token) {
-  recaptchaToken.value = token;
-}
-
-function onRecaptchaExpired() {
-  recaptchaToken.value = '';
-}
-
-function renderRecaptcha() {
-  if (!window.grecaptcha) {
-    console.error('reCAPTCHA API not available to render.');
-    return;
-  }
-  if (!recaptchaContainer.value) {
-    console.error('reCAPTCHA container DOM element is null when renderRecaptcha is called. Cannot render.');
-    return;
-  }
-  console.log('Rendering reCAPTCHA into:', recaptchaContainer.value); // Confirm target element
-
-  recaptchaWidgetId.value = window.grecaptcha.render(recaptchaContainer.value, {
-    sitekey: SITE_KEY,
-    size: 'normal',
-    callback: onRecaptchaSuccess,
-    'expired-callback': onRecaptchaExpired,
-  });
-  recaptchaLoaded.value = true;
-}
-
-function resetRecaptcha() {
-  if (recaptchaWidgetId.value !== null && window.grecaptcha) {
-    window.grecaptcha.reset(recaptchaWidgetId.value);
-    recaptchaToken.value = '';
-  }
-}
-
-const submitForm = async () => {
-    if (!name.value || !email.value || !message.value) {
-        notyf.error('Please fill in all required fields.');
+      }
+      // Ensure grecaptcha object is loaded
+      if (!window.grecaptcha) {
+        console.error('Google reCAPTCHA script not loaded.');
         return;
-    }
+      }
 
-    // This defensive check should now be less likely to trigger if refs are properly initialized
-    if (name.value === undefined || email.value === undefined || message.value === undefined) {
-        console.error("Critical Error: Form field ref is undefined before submission payload creation!");
-        notyf.error("An internal form error occurred. Please refresh and try again.");
-        return;
-    }
+      // Render the reCAPTCHA widget
+      this.recaptchaWidgetId = window.grecaptcha.render(recaptchaContainer, {
+        sitekey: this.SITE_KEY, // Your reCAPTCHA Site Key
+        size: 'normal', // 'normal' or 'compact'
+        callback: this.onRecaptchaSuccess, // Callback for successful verification
+        'expired-callback': this.onRecaptchaExpired, // Callback for expired token
+      });
+    },
 
-    if (!recaptchaToken.value) {
-        notyf.error('Please verify that you are not a robot.');
-        return;
-    }
+    /**
+     * Resets the reCAPTCHA widget, clearing the current token.
+     */
+    resetRecaptcha() {
+      if (this.recaptchaWidgetId !== null) {
+        window.grecaptcha.reset(this.recaptchaWidgetId);
+        this.recaptchaToken = ''; // Also clear the internal token state
+      }
+    },
 
-    isLoading.value = true;
+    /**
+     * Handles the form submission process.
+     * Sends form data and reCAPTCHA token to Web3Forms.
+     */
+    async submitForm() {
+      // Prevent form submission if reCAPTCHA hasn't been verified
+      if (!this.recaptchaToken) {
+        this.notyf.error('Please verify that you are not a robot.');
+        return; // Stop the function execution
+      }
 
-    try {
+      this.isLoading = true; // Show loading state
+      try {
         const response = await fetch("https://api.web3forms.com/submit", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Accept: "application/json",
-            },
-            body: JSON.stringify({
-                access_key: WEB3FORMS_ACCESS_KEY,
-                subject: subject,
-                name: name.value,
-                email: email.value,
-                message: message.value,
-                "g-recaptcha-response": recaptchaToken.value,
-            }),
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify({
+            access_key: this.WEB3FORMS_ACCESS_KEY,
+            subject: this.subject,
+            name: this.form.name,
+            email: this.form.email,
+            message: this.form.message,
+            "g-recaptcha-response": this.recaptchaToken, // Include the reCAPTCHA token
+          }),
         });
         const result = await response.json();
 
         if (result.success) {
-            notyf.success("Message Sent!");
-            name.value = "";
-            email.value = "";
-            message.value = "";
+          console.log("Form submission successful:", result);
+          this.notyf.success("Message Sent!");
+          // Clear form fields after successful submission
+          this.form.name = '';
+          this.form.email = '';
+          this.form.message = '';
         } else {
-            console.error("Web3Forms submission failed:", result);
-            let errorMessage = "Failed to send message.";
-            if (result.message) {
-                errorMessage += " " + result.message;
-            }
-            notyf.error(errorMessage);
+          // Log the actual error from Web3Forms for debugging
+          console.error("Web3Forms error:", result);
+          this.notyf.error("Failed to send message.");
         }
-    } catch (error) {
-        console.error("Network or submission error:", error);
-        notyf.error("Failed to send message. Please check your internet connection.");
-    } finally {
-        isLoading.value = false;
-        resetRecaptcha();
+      } catch (error) {
+        // Log network or other unexpected errors
+        console.error("Form submission error:", error);
+        this.notyf.error("Failed to send message.");
+      } finally {
+        this.isLoading = false; // Always disable loading state
+        this.resetRecaptcha(); // Reset reCAPTCHA regardless of outcome
+      }
     }
-}
-
-// --- Lifecycle Hooks and Watchers ---
-
-// Use a watcher to ensure recaptchaContainer is available before rendering
-watch(recaptchaContainer, (newValue) => {
-    if (newValue && window.grecaptcha) {
-        // console.log('recaptchaContainer is now available. Attempting to render.');
-        renderRecaptcha();
-    } else if (newValue && !window.grecaptcha) {
-        // console.log('recaptchaContainer is available, but grecaptcha API not yet loaded. Waiting...');
-    }
-}, { immediate: false }); // Do not run immediately on component creation
-
-onMounted(async () => {
-  try {
-    await loadRecaptchaScript();
-    // Now that grecaptcha API is loaded, the 'watch' effect on recaptchaContainer
-    // will handle the rendering once the DOM element is ready.
-    // We removed the setTimeout and direct call to renderRecaptcha here.
-  } catch (error) {
-    console.error("Failed to load reCAPTCHA script:", error);
-    notyf.error("Failed to load reCAPTCHA. Please try refreshing the page.");
-    recaptchaLoaded.value = false;
   }
-});
-
-onBeforeUnmount(() => {
-  if (window._recaptchaLoadResolve) {
-    delete window._recaptchaLoadResolve;
-  }
-});
+};
 </script>
 
 <style scoped>
-/* Your existing styles */
-.form {
-  background-color: darkgray;
-}
-.social-icon {
-  height: 40px;
-}
-.map-frame {
-  border: 0;
-}
-.btn-custom {
-  background-color: #fb5607;
+/* Scoped styles for this component */
+#contact {
+  background-color: #343a40;
+  border-radius: 40px;
+  padding: 80px 0;
+  border-bottom: 1px solid #e9ecef;
   color: white;
-  border: 1px solid #fb5607;
 }
-.btn-custom:hover {
-  background-color: #d94a06;
-  border: 1px solid #d94a06;
+#contact h2 {
+  color: #00896f;
+  font-weight: 700;
+  margin-bottom: 40px;
+  text-align: center;
+  position: relative;
+  padding-bottom: 10px;
+}
+#map {
+  color: #343a40;
+  background-color: #00896f;
+  border-radius: 40px;
+}
+#map h2 {
+  color: #343a40;
+}
+.contact-icon-large {
+  font-size: 5rem;
+}
+
+/* UI Improvement: Form focus state */
+.form-control:focus {
+  border-color: #00896f;
+  box-shadow: 0 0 0 0.25rem rgba(0, 137, 111, 0.25);
+  background-color: #ffffff;
 }
 </style>
