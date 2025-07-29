@@ -62,7 +62,7 @@ import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { Notyf } from 'notyf';
 import 'notyf/notyf.min.css';
 
-// Initialize Notyf for notifications
+// Initialize Notyf for floating notifications
 const notyf = new Notyf({
   duration: 3000,
   position: {
@@ -75,15 +75,14 @@ const notyf = new Notyf({
   ]
 });
 
-// Using a reactive message box to display Notyf-like messages within the template
-// This replaces the previous 'messageBox' data property for consistency with Notyf.
+// Reactive state for the in-template message box (if you want to use it alongside Notyf)
 const notyfMessage = ref({
   show: false,
   type: '',
   text: ''
 });
 
-// Function to show messages using the reactive message box
+// Function to show messages in the in-template box
 const showTemplateMessage = (text, type) => {
   notyfMessage.value.show = true;
   notyfMessage.value.text = text;
@@ -123,6 +122,7 @@ const recaptchaToken = ref('');       // To store the reCAPTCHA token after succ
 function onRecaptchaSuccess(token) {
   recaptchaToken.value = token; // Store the token
   notyf.success('reCAPTCHA verified! You can now submit the form.');
+  // showTemplateMessage('reCAPTCHA verified! You can now submit the form.', 'success'); // Uncomment if you want both
 }
 
 /**
@@ -132,68 +132,7 @@ function onRecaptchaSuccess(token) {
 function onRecaptchaExpired() {
   recaptchaToken.value = ''; // Clear the token
   notyf.error('reCAPTCHA expired. Please re-verify.');
+  showTemplateMessage('reCAPTCHA expired. Please re-verify.', 'danger');
   if (window.grecaptcha && recaptchaWidgetId.value !== null) {
     window.grecaptcha.reset(recaptchaWidgetId.value);
   }
-}
-
-/**
- * Renders the reCAPTCHA widget into the designated container.
- */
-function renderRecaptcha() {
-  // Ensure the reCAPTCHA container element exists using $refs
-  if (!recaptchaContainer.value) {
-    console.error('reCAPTCHA container element not found. Make sure <div ref="recaptchaContainer"></div> exists in your template.');
-    // Attempt to re-run renderRecaptcha after a short delay if container not found
-    setTimeout(() => {
-        if (!recaptchaContainer.value && window.grecaptcha) {
-            console.warn('Retrying reCAPTCHA render after short delay...');
-            renderRecaptcha();
-        }
-    }, 500); // Wait 500ms and try again
-    return;
-  }
-  // Ensure grecaptcha object is loaded
-  if (!window.grecaptcha) {
-    console.error('Google reCAPTCHA script not loaded.');
-    return;
-  }
-
-  // Render the reCAPTCHA widget
-  // Check if it's already rendered to avoid multiple renders
-  if (recaptchaWidgetId.value === null) {
-      recaptchaWidgetId.value = window.grecaptcha.render(recaptchaContainer.value, {
-        sitekey: SITE_KEY,            // Your reCAPTCHA Site Key
-        size: 'normal',               // 'normal' or 'compact'
-        callback: onRecaptchaSuccess, // Callback for successful verification
-        'expired-callback': onRecaptchaExpired, // Callback for expired token
-        'error-callback': onRecaptchaExpired // Using expired callback for errors as well
-      });
-  }
-}
-
-/**
- * Resets the reCAPTCHA widget, clearing the current token.
- */
-function resetRecaptcha() {
-  if (recaptchaWidgetId.value !== null && window.grecaptcha) {
-    window.grecaptcha.reset(recaptchaWidgetId.value);
-    recaptchaToken.value = ''; // Also clear the internal token state
-  }
-}
-
-/**
- * Handles the form submission process.
- * Sends form data and reCAPTCHA token to Web3Forms.
- */
-const submitForm = async () => {
-  // Prevent form submission if reCAPTCHA hasn't been verified
-  if (!recaptchaToken.value) {
-    notyf.error('Please verify that you are not a robot.');
-    showTemplateMessage('Please complete the reCAPTCHA verification.', 'danger');
-    return;
-  }
-
-  isLoading.value = true; // Show loading state
-  try {
-    const response = await
