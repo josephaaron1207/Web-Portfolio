@@ -1,17 +1,23 @@
 <template>
-    <div class="row justify-content-center align-items-center py-4 py-lg-5" id="landing">
-        <div class="col-10 col-md-3 p-3 py-lg-5">
-            <img src="https://d2kdkfqxnvpuu9.cloudfront.net/images/thumb/47471.jpg?1319388273" class="rounded-circle border border-white img-fluid">
+  <section id="about">
+    <div class="container">
+      <h2>About Me</h2>
+      <div class="row align-items-center">
+        <div class="col-lg-5 text-center">
+          <img id="myphoto" src="../../images/Bernon.jpg" alt="Your Photo" />
         </div>
-        <div class="col-md-7 col-lg-5 text-white pl-md-5 py-lg-5">
-            <h1 class="mt-2 text-center text-md-left" id="myName">Charles Babbage</h1>
-            <h3 class="my-3 text-center text-md-left" id="myTitle">Full Stack Web Developer</h3>
-            <p class="text-justify landing-text">
-                Charles Babbage KH FRS (/ˈbæbɪdʒ/; 26 December 1791 – 18 October 1871) was an English polymath. A mathematician, philosopher, inventor and mechanical engineer, Babbage originated the concept of a digital programmable computer.
-
-                Babbage is considered by some to be "father of the computer".
-            </p>
+        <div class="col-lg-7 mt-4 mt-lg-0">
+          <p>
+            Hello! I'm Joseph Aaron, a Full Stack Web Developer, based in Parañaque City, Philippines. I specialize in frontend development.
+          </p>
+          <p>
+            My journey into Tech started when I enrolled to Zuitt Bootcamp. I love transforming complex problems into simple, beautiful, and intuitive solutions. When I'm not [working], you can find me playing table tennis, watching Horror/Anime, writing poems and gaming.
+          </p>
+          <p>
+            I am always eager to learn new technologies and take on challenging projects. Let's connect and create something amazing together!
+          </p>
         </div>
+      </div>
     </div>
+  </section>
 </template>
-

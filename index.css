@@ -117,53 +117,53 @@
             color: #e7f4ea;
         }
 
- 		#myphoto {
- 			height: 300px;
- 			width: 300px;
- 			border-radius: 25px;
- 		}
+        #myphoto {
+            height: 300px;
+            width: 300px;
+            border-radius: 25px;
+        }
 
- 		#projects h2 {
- 			color: #343a40;
- 		}
+        #projects h2 {
+            color: #343a40;
+        }
 
- 		#contact {
- 			background-color: #343a40;
- 			border-radius: 40px;
+        #contact {
+            background-color: #343a40;
+            border-radius: 40px;
 
  
- 		}
+        }
 
- 		#tools {
- 			background-color: #343a40;
- 			border-radius: 40px;
- 		}
+        #tools {
+            background-color: #343a40;
+            border-radius: 40px;
+        }
 
- 		#about {
- 			background-color: #343a40;
- 			border-radius: 40px;
- 		}
+        #about {
+            background-color: #343a40;
+            border-radius: 40px;
+        }
 
- 		#projects {
- 			background-color: #00896f;
- 			border-radius: 40px;
- 		}
+        #projects {
+            background-color: #00896f;
+            border-radius: 40px;
+        }
 
- 		#about h2 {
- 			color: #00896f;
- 		}
+        #about h2 {
+            color: #00896f;
+        }
 
- 		#tools h2 {
- 			color: #00896f;
- 		}
+        #tools h2 {
+            color: #00896f;
+        }
 
- 		#contact h2 {
- 			color: #00896f;
- 		}
+        #contact h2 {
+            color: #00896f;
+        }
 
- 		footer a {
- 			text-decoration: none;
- 		}
+        footer a {
+            text-decoration: none;
+        }
 
 
         #tools {

@@ -1,27 +1,29 @@
 <template>
-	<nav class="navbar navbar-expand-lg navbar-dark sticky-top" id="menu">
-        <a href="#landing" class="navbar-brand d-lg-none">Charles</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#portfolio-nav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="portfolio-nav">
-            <ul class="navbar-nav ml-auto text-center text-md-left">
-                <li class="nav-item">
-                    <a href="#landing" class="nav-link" id="hm">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#projects" class="nav-link" id="prjcts">My Projects</a>
-                </li>
-            </ul>
-            
-            <ul class="navbar-nav pl-0 mr-auto text-center text-md-left">
-                <li class="nav-item">
-                    <a href="#tools" class="nav-link" id="tls">Tools</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#contact" class="nav-link" id="cntct">Contact</a>
-                </li>
-            </ul>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="#landing">
+        <img src="../../images/logo.png" alt="Company Logo" class="logo" />
+      </a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#home"
+        aria-controls="home"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="home">
+        <div class="navbar-nav ms-auto">
+          <a class="nav-link" href="#landing">Home</a>
+          <a class="nav-link" href="#about">About</a>
+          <a class="nav-link" href="#tools">Tools</a>
+          <a class="nav-link" href="#projects">Projects</a>
+          <a class="nav-link" href="#contact">Contact</a>
         </div>
-    </nav>
+      </div>
+    </div>
+  </nav>
 </template>

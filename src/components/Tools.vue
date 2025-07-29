@@ -1,59 +1,58 @@
 <template>
-	<div class="row flex-column bg-white jumbotron" id="tools">
-        <h1 class="my-1 text-center" >Tools</h1>
-        <div class="row justify-content-center py-3 tools-img">
-            <div class="col-md-3 col-lg-2 mx-4 my-3">
-                <h3 class="my-3 text-center">Front End</h3>
-                <div class="row justify-content-center tools-img gx-5">
-                    <div class="col-6 tools-img">
-                        <img src="/images/tools/html.svg" class="img-fluid">
-                    </div>
-                    <div class="col-6 tools-img">
-                        <img src="/images/tools/css.svg" class="img-fluid">
-                    </div>
-                    <div class="col-6 tools-img">
-                        <img src="/images/tools/bootstrap.svg" class="img-fluid">
-                    </div>
-                    <div class="col-6 tools-img">
-                        <img src="/images/tools/js.svg" class="img-fluid">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 col-lg-2 mx-4 my-3">
-                <h3 class="my-3 text-center">MERN</h3>
-                <div class="row tools-img gx-5">
-                    <div class="col-6 tools-img">
-                        <img src="/images/tools/mongodb.svg" class="img-fluid">
-                    </div>
-                    <div class="col-6 tools-img">
-                        <img src="/images/tools/expressjs.svg" class="img-fluid">
-                    </div>
-                    <div class="col-6 tools-img">
-                        <img src="/images/tools/react.svg" class="img-fluid">
-                    </div>
-                    <div class="col-6 tools-img">
-                        <img src="/images/tools/nodejs.svg" class="img-fluid">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 col-lg-2 mx-4 my-3">
-                <h3 class="my-3 text-center">Other Tools</h3>
-                <div class="row tools-img gx-5">
-
-                    <div class="col-6 tools-img">
-                        <img src="/images/tools/heroku.svg" class="img-fluid">
-                    </div>
-                    <div class="col-6 tools-img">
-                        <img src="/images/tools/git.svg" class="img-fluid">
-                    </div>
-                    <div class="col-6 tools-img">
-                        <img src="/images/tools/postman.svg" class="img-fluid">
-                    </div>
-                    <div class="col-6 tools-img">
-                        <img src="/images/tools/sublime.svg" class="img-fluid">
-                    </div>
-                </div>
-            </div>
+  <div id="tools" class="container-fluid">
+    <h2>Tools</h2>
+    <div class="tools-grid">
+      <div class="category">
+        <h2>Front End</h2>
+        <div class="tool-items">
+          <div class="tool-item">
+            <img src="../../images/tools/html.svg" alt="Abstract HTML Icon" />
+          </div>
+          <div class="tool-item">
+            <img src="../../images/tools/css.svg" alt="Abstract CSS Icon" />
+          </div>
+          <div class="tool-item">
+            <img src="../../images/tools/bootstrap.svg" alt="Abstract Bootstrap Icon" />
+          </div>
+          <div class="tool-item">
+            <img src="../../images/tools/js.svg" alt="Abstract Javascript Icon" />
+          </div>
         </div>
+      </div>
+      <div class="category">
+        <h2>MERN</h2>
+        <div class="tool-items">
+          <div class="tool-item">
+            <img src="../../images/tools/mongodb.svg" alt="Abstract MongoDB Icon" />
+          </div>
+          <div class="tool-item">
+            <img src="../../images/tools/expressjs.svg" alt="Abstract Express.js Icon" />
+          </div>
+          <div class="tool-item">
+            <img src="../../images/tools/react.svg" alt="Abstract React Icon" />
+          </div>
+          <div class="tool-item">
+            <img src="../../images/tools/nodejs.svg" alt="Abstract Node.js Icon" />
+          </div>
+        </div>
+      </div>
+      <div class="category">
+        <h2>Other Tools</h2>
+        <div class="tool-items">
+          <div class="tool-item">
+            <img src="../../images/tools/heroku.svg" alt="Abstract Heroku Icon" />
+          </div>
+          <div class="tool-item">
+            <img src="../../images/tools/git.svg" alt="Abstract Git Icon" />
+          </div>
+          <div class="tool-item">
+            <img src="../../images/tools/postman.svg" alt="Abstract Postman Icon" />
+          </div>
+          <div class="tool-item">
+            <img src="../../images/tools/sublime.svg" alt="Abstract Sublime Text Icon" />
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </template>
