@@ -77,7 +77,7 @@
     import 'notyf/notyf.min.css';
 
     const notyf = new Notyf();
-    const WEB3FORMS_ACCESS_KEY = "951c837b-2583-4a17-b896-758c5a65320a";
+    const WEB3FORMS_ACCESS_KEY = "b40ddd06-4cec-4e0f-9f1e-6261b87d1125";
 
     const subject = "New message from portfolio contact form";
 
