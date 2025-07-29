@@ -172,28 +172,34 @@ export default {
      * Sends form data and reCAPTCHA token to Web3Forms.
      */
     async submitForm() {
-      // Prevent form submission if reCAPTCHA hasn't been verified
-      if (!this.recaptchaToken) {
+    // Prevent form submission if reCAPTCHA hasn't been verified
+    if (!this.recaptchaToken) {
         this.notyf.error('Please verify that you are not a robot.');
-        return; // Stop the function execution
-      }
+        console.log("reCAPTCHA token is missing, stopping submission."); // <-- Add this
+        return;
+    }
 
-      this.isLoading = true; // Show loading state
-      try {
-        const response = await fetch("https://api.web3forms.com/submit", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-          body: JSON.stringify({
+    this.isLoading = true; // Show loading state
+    try {
+        const payload = {
             access_key: this.WEB3FORMS_ACCESS_KEY,
             subject: this.subject,
             name: this.form.name,
             email: this.form.email,
             message: this.form.message,
             "g-recaptcha-response": this.recaptchaToken, // Include the reCAPTCHA token
-          }),
+        };
+
+        console.log("Sending payload to Web3Forms:", JSON.stringify(payload, null, 2)); // <-- Add this for full payload
+        console.log("reCAPTCHA token being sent:", this.recaptchaToken); // <-- Add this for token inspection
+
+        const response = await fetch("https://api.web3forms.com/submit", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+            },
+            body: JSON.stringify(payload),
         });
         const result = await response.json();
 
