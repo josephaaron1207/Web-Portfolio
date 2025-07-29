@@ -57,13 +57,13 @@
               <div class="d-flex justify-content-end mt-2">
                   <div ref="recaptchaContainer"></div>
               </div>
-              <div class="d-flex justify-content-start mt-2">
-                                <div ref="recaptchaContainer"></div>
-                            </div>
               <div class="text-center mt-3">
                 <button type="submit" class="submit-btn btn-primary-custom" :disabled="isLoading">{{isLoading ? "Sending..." : "Send Message"}}</button>
               </div>
             </form>
+            <div class="d-flex justify-content-end mt-2">
+                                <div ref="recaptchaContainer"></div>
+                            </div>
           </div>
         </div>
       </div>
@@ -153,8 +153,8 @@ export default {
 
       // Render the reCAPTCHA widget
       this.recaptchaWidgetId = window.grecaptcha.render(recaptchaContainer, {
-        sitekey: this.SITE_KEY, 
-        size: 'normal', 
+        sitekey: this.SITE_KEY, // Your reCAPTCHA Site Key
+        size: 'normal', // 'normal' or 'compact'
         callback: this.onRecaptchaSuccess, // Callback for successful verification
         'expired-callback': this.onRecaptchaExpired, // Callback for expired token
       });

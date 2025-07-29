@@ -6,16 +6,16 @@
         <h2>Front End</h2>
         <div class="tool-items">
           <div class="tool-item">
-            <img src="../../images/html5.png" alt="Abstract HTML Icon" />
+            <img src="../../images/tools/html.svg" alt="Abstract HTML Icon" />
           </div>
           <div class="tool-item">
-            <img src="../../images/CSS3.png" alt="Abstract CSS Icon" />
+            <img src="../../images/tools/css.svg" alt="Abstract CSS Icon" />
           </div>
           <div class="tool-item">
-            <img src="../../images/bootstrap.png" alt="Abstract Bootstrap Icon" />
+            <img src="../../images/tools/bootstrap.svg" alt="Abstract Bootstrap Icon" />
           </div>
           <div class="tool-item">
-            <img src="../../images/Javascript.png" />
+            <img src="../../images/tools/js.svg" alt="Abstract Javascript Icon" />
           </div>
         </div>
       </div>
@@ -23,16 +23,16 @@
         <h2>MERN</h2>
         <div class="tool-items">
           <div class="tool-item">
-            <img src="../../images/mongodb.png" alt="Abstract MongoDB Icon" />
+            <img src="../../images/tools/mongodb.svg" alt="Abstract MongoDB Icon" />
           </div>
           <div class="tool-item">
-            <img src="../../images/express.png" alt="Abstract Express.js Icon" />
+            <img src="../../images/tools/expressjs.svg" alt="Abstract Express.js Icon" />
           </div>
           <div class="tool-item">
-            <img src="../../images/react.png" alt="Abstract React Icon" />
+            <img src="../../images/tools/react.svg" alt="Abstract React Icon" />
           </div>
           <div class="tool-item">
-            <img src="../../images/nodeman.png" alt="Abstract Node.js Icon" />
+            <img src="../../images/tools/nodejs.svg" alt="Abstract Node.js Icon" />
           </div>
         </div>
       </div>
@@ -40,16 +40,16 @@
         <h2>Other Tools</h2>
         <div class="tool-items">
           <div class="tool-item">
-            <img src="../../images/heroku.png" alt="Abstract Heroku Icon" />
+            <img src="../../images/tools/heroku.svg" alt="Abstract Heroku Icon" />
           </div>
           <div class="tool-item">
-            <img src="../../images/git.jpg" alt="Abstract Git Icon" />
+            <img src="../../images/tools/git.svg" alt="Abstract Git Icon" />
           </div>
           <div class="tool-item">
-            <img src="../../images/postman.png" alt="Abstract Sentry Icon" />
+            <img src="../../images/tools/postman.svg" alt="Abstract Postman Icon" />
           </div>
           <div class="tool-item">
-            <img src="../../images/sublime.webp" alt="Abstract Sublime Text Icon" />
+            <img src="../../images/tools/sublime.svg" alt="Abstract Sublime Text Icon" />
           </div>
         </div>
       </div>
