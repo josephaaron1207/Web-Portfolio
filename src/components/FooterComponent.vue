@@ -8,7 +8,7 @@
 
 <style scoped>
 footer {
-  background-color: #343a40,
+  background-color: #343a40;
   color: #00896f;
   padding: 40px 0;
   text-align: center;
