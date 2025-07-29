@@ -54,16 +54,13 @@
               <div class="mb-3">
                 <textarea class="form-control rounded-4" id="message" rows="5" v-model="form.message" placeholder="Your Message" required></textarea>
               </div>
-              <div class="d-flex justify-content-end mt-2">
+              <div class="d-flex justify-content-start mt-2">
                   <div ref="recaptchaContainer"></div>
               </div>
               <div class="text-center mt-3">
                 <button type="submit" class="submit-btn btn-primary-custom" :disabled="isLoading">{{isLoading ? "Sending..." : "Send Message"}}</button>
               </div>
             </form>
-            <div class="d-flex justify-content-end mt-2">
-                                <div ref="recaptchaContainer"></div>
-                            </div>
           </div>
         </div>
       </div>
