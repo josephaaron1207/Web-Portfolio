@@ -8,8 +8,8 @@
 
 <style scoped>
 footer {
-  background-color: #00896f;
-  color: white;
+  background-color: #343a40,
+  color: #00896f;
   padding: 40px 0;
   text-align: center;
   border-top-left-radius: 50px;
