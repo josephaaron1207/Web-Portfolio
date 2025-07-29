@@ -24,13 +24,13 @@
         <div class="col-lg-8">
           <form @submit.prevent="submitForm">
             <div class="mb-3">
-              <input type="text" class="form-control rounded-pill" id="name" placeholder="Your Name" required v-model="form.name">
+              <input type="text" class="form-control rounded-pill" id="name" placeholder="Your Name" required v-model="form.name" name="name">
             </div>
             <div class="mb-3">
-              <input type="email" class="form-control rounded-pill" id="email" placeholder="Your Email" required v-model="form.email">
+              <input type="email" class="form-control rounded-pill" id="email" placeholder="Your Email" required v-model="form.email" name="email">
             </div>
             <div class="mb-3">
-              <textarea class="form-control rounded-4" id="message" rows="5" placeholder="Your Message" required v-model="form.message"></textarea>
+              <textarea class="form-control rounded-4" id="message" rows="5" placeholder="Your Message" required v-model="form.message" name="message"></textarea>
             </div>
 
             <div class="mb-3 d-flex justify-content-center">
@@ -38,7 +38,9 @@
             </div>
 
             <div class="text-center">
-              <button type="submit" class="btn btn-primary-custom">Send Message</button>
+              <button type="submit" class="btn btn-primary-custom" :disabled="isLoading">
+                  {{ isLoading ? "Sending..." : "Send Message" }}
+              </button>
             </div>
 
             <div v-if="messageBox.show" :class="['alert mt-3', messageBox.type === 'success' ? 'alert-success' : 'alert-danger']" role="alert">
@@ -56,8 +58,10 @@ export default {
   name: 'Contact',
   data() {
     return {
-      recaptchaSiteKey: '6LdgtZIrAAAAAG7QHntHbxhxUWFOHJQACKCfdyiZ', // <--- REPLACE THIS LINE with your new site key
+      recaptchaSiteKey: '6LdgtZIrAAAAAG7QHntHbxhxUWFOHJQACKCfdyiZ', // Your reCAPTCHA site key
+      web3formsAccessKey: '951c837b-2583-4a17-b896-758c5a65320a', // Your Web3Forms access key
       recaptchaToken: null,
+      isLoading: false, // Add loading state
       messageBox: {
         show: false,
         type: '', // 'success' or 'danger'
@@ -88,13 +92,19 @@ export default {
           'expired-callback': this.onRecaptchaExpired,
           'error-callback': this.onRecaptchaError
         });
+      } else {
+          // Fallback if container or grecaptcha not ready immediately
+          setTimeout(() => {
+              if (this.$refs.recaptchaContainer && window.grecaptcha) {
+                  this.renderRecaptcha();
+              }
+          }, 200); // Retry after 200ms
       }
     },
     onRecaptchaVerify(token) {
       this.recaptchaToken = token;
-      this.showMessage('You can now submit the form.', 'success');
+      this.showMessage('reCAPTCHA verified! You can now submit the form.', 'success');
       console.log('reCAPTCHA token:', token);
-      // In a real application, you would send this token to your backend for verification.
     },
     onRecaptchaExpired() {
       this.recaptchaToken = null;
@@ -117,22 +127,53 @@ export default {
         return;
       }
 
-      // Here you would typically send your form data and recaptchaToken to your backend
-      // For demonstration, we'll just log the data.
-      console.log('Form submitted:', this.form);
-      console.log('reCAPTCHA Token:', this.recaptchaToken);
+      this.isLoading = true; // Set loading state to true
 
-      // Simulate a successful submission
-      this.showMessage('Form submitted successfully!', 'success');
+      try {
+        const response = await fetch("https://api.web3forms.com/submit", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+          },
+          body: JSON.stringify({
+            access_key: this.web3formsAccessKey,
+            name: this.form.name,
+            email: this.form.email,
+            message: this.form.message,
+            "g-recaptcha-response": this.recaptchaToken, // Include reCAPTCHA token
+            subject: 'New Contact Form Submission from Portfolio', // Optional subject
+          })
+        });
 
-      // Reset the form and reCAPTCHA after submission
-      this.form.name = '';
-      this.form.email = '';
-      this.form.message = '';
-      if (window.grecaptcha) {
-        window.grecaptcha.reset();
+        const result = await response.json();
+
+        if (result.success) {
+          this.showMessage('Message sent successfully!', 'success');
+          // Reset the form and reCAPTCHA after successful submission
+          this.form.name = '';
+          this.form.email = '';
+          this.form.message = '';
+          if (window.grecaptcha) {
+            window.grecaptcha.reset();
+          }
+          this.recaptchaToken = null; // Clear the token
+        } else {
+          console.error('Web3Forms submission error:', result);
+          this.showMessage(`Failed to send message: ${result.message || 'Unknown error'}`, 'danger');
+          if (window.grecaptcha) {
+            window.grecaptcha.reset(); // Reset reCAPTCHA on failure
+          }
+        }
+      } catch (error) {
+        console.error('Network or submission error:', error);
+        this.showMessage('An error occurred while sending your message. Please try again.', 'danger');
+        if (window.grecaptcha) {
+          window.grecaptcha.reset(); // Reset reCAPTCHA on failure
+        }
+      } finally {
+        this.isLoading = false; // Always set loading state to false
       }
-      this.recaptchaToken = null; // Clear the token
     },
     showMessage(text, type) {
       this.messageBox.show = true;
