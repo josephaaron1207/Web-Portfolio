@@ -33,7 +33,6 @@
               <textarea class="form-control rounded-4" id="message" rows="5" placeholder="Your Message" required v-model="form.message"></textarea>
             </div>
 
-            <!-- reCAPTCHA Widget Div -->
             <div class="mb-3 d-flex justify-content-center">
               <div ref="recaptchaContainer" class="g-recaptcha" :data-sitekey="recaptchaSiteKey"></div>
             </div>
@@ -42,7 +41,6 @@
               <button type="submit" class="btn btn-primary-custom">Send Message</button>
             </div>
 
-            <!-- Custom Message Box (instead of alert) -->
             <div v-if="messageBox.show" :class="['alert mt-3', messageBox.type === 'success' ? 'alert-success' : 'alert-danger']" role="alert">
               {{ messageBox.text }}
             </div>
@@ -58,7 +56,7 @@ export default {
   name: 'Contact',
   data() {
     return {
-      recaptchaSiteKey: '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI', // Placeholder site key. REPLACE THIS WITH YOUR ACTUAL SITE KEY!
+      recaptchaSiteKey: '6LdgtZIrAAAAAG7QHntHbxhxUWFOHJQACKCfdyiZ', // <--- REPLACE THIS LINE with your new site key
       recaptchaToken: null,
       messageBox: {
         show: false,
