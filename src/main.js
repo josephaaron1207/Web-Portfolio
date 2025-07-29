@@ -1,5 +1,8 @@
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap/dist/js/bootstrap.min'
+import './assets/main.css'
+
 import { createApp } from 'vue'
 import App from './App.vue'
-import '../index.css' // Import your main CSS here, relative to main.js
 
 createApp(App).mount('#app')
