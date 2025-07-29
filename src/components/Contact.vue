@@ -184,54 +184,46 @@ export default {
      * Sends form data and reCAPTCHA token to Web3Forms.
      */
     async submitForm() {
-      // Prevent form submission if reCAPTCHA hasn't been verified
-      if (!this.recaptchaToken) {
-        this.notyf.error('Please verify that you are not a robot.');
-        return; // Stop the function execution
-      }
+    // if (!this.recaptchaToken) { // COMMENT THIS OUT
+    //   this.notyf.error('Please verify that you are not a robot.'); // COMMENT THIS OUT
+    //   return; // COMMENT THIS OUT
+    // }
 
-      this.isLoading = true; // Show loading state
-      try {
-        // Use FormData instead of JSON.stringify for Web3Forms
+    this.isLoading = true;
+    try {
         const formData = new FormData();
         formData.append("access_key", this.WEB3FORMS_ACCESS_KEY);
         formData.append("subject", this.subject);
         formData.append("name", this.form.name);
         formData.append("email", this.form.email);
         formData.append("message", this.form.message);
-        formData.append("g-recaptcha-response", this.recaptchaToken);
+        // formData.append("g-recaptcha-response", this.recaptchaToken); // COMMENT THIS OUT
 
         const response = await fetch("https://api.web3forms.com/submit", {
-          method: "POST",
-          // When using FormData, the 'Content-Type' header is automatically set to 'multipart/form-data'
-          // Do NOT set 'Content-Type': 'application/json' when using FormData.
-          body: formData,
+            method: "POST",
+            body: formData,
         });
         const result = await response.json();
 
-        if (response.ok && result.success) { // Check response.ok for HTTP success
-          console.log("Form submission successful:", result);
-          this.notyf.success("Message Sent!");
-          // Clear form fields after successful submission
-          this.form.name = '';
-          this.form.email = '';
-          this.form.message = '';
+        if (response.ok && result.success) {
+            console.log("Form submission successful:", result);
+            this.notyf.success("Message Sent!");
+            this.form.name = '';
+            this.form.email = '';
+            this.form.message = '';
         } else {
-          // Log the actual error from Web3Forms for debugging
-          console.error("Web3Forms error:", result);
-          // Provide more specific error message if available from Web3Forms
-          const errorMessage = result.message || "Failed to send message.";
-          this.notyf.error(errorMessage);
+            console.error("Web3Forms error:", result);
+            const errorMessage = result.message || "Failed to send message.";
+            this.notyf.error(errorMessage);
         }
-      } catch (error) {
-        // Log network or other unexpected errors
+    } catch (error) {
         console.error("Form submission error:", error);
         this.notyf.error("Failed to send message. Please try again later.");
-      } finally {
-        this.isLoading = false; // Always disable loading state
-        this.resetRecaptcha(); // Reset reCAPTCHA regardless of outcome
-      }
+    } finally {
+        this.isLoading = false;
+        // this.resetRecaptcha(); // COMMENT THIS OUT
     }
+}
   }
 };
 </script>
