@@ -27,3 +27,42 @@
     </div>
   </nav>
 </template>
+
+<style scoped>
+.navbar {
+  background-color: #343a40;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Updated CSS for the logo image */
+.navbar-brand .logo {
+  max-height: 60px; /* Increased height to make the logo bigger */
+  width: auto;
+}
+
+.nav-link {
+  font-weight: 600;
+  color: white !important;
+  transition: color 0.3s ease;
+  position: relative;
+}
+.nav-link.active,
+.nav-link:hover {
+  color: #00896f !important;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #00896f;
+  transition: width 0.3s ease;
+}
+.nav-link:hover::after,
+.nav-link.active::after {
+  width: 100%;
+}
+</style>
