@@ -21,3 +21,26 @@
     </div>
   </section>
 </template>
+
+<style scoped>
+#about {
+  background-color: #343a40;
+  border-radius: 40px;
+  padding: 80px 0;
+  border-bottom: 1px solid #e9ecef;
+  color: white;
+}
+#about h2 {
+  color: #00896f;
+  font-weight: 700;
+  margin-bottom: 40px;
+  text-align: center;
+  position: relative;
+  padding-bottom: 10px;
+}
+#myphoto {
+  height: 300px;
+  width: 300px;
+  border-radius: 25px;
+}
+</style>

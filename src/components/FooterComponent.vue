@@ -5,3 +5,23 @@
         <p class="text-center">&copy; All Rights Reserved 2025</p>
     </footer>
 </template>
+
+<style scoped>
+footer {
+  background-color: #00896f;
+  color: white;
+  padding: 40px 0;
+  text-align: center;
+  border-top-left-radius: 50px;
+  border-top-right-radius: 50px;
+}
+.social-icons a {
+  color: white;
+  font-size: 1.8rem;
+  margin: 0 15px;
+  transition: color 0.3s ease;
+}
+.social-icons a:hover {
+  color: #e7f4ea;
+}
+</style>
