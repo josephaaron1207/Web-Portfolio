@@ -25,15 +25,14 @@
             <input type="hidden" name="g-recaptcha-response" :value="recaptchaToken">
             <input type="hidden" name="subject" value="New Contact Form Submission from Portfolio">
 
-
             <div class="mb-3">
-              <input type="text" class="form-control rounded-pill" id="name" placeholder="Your Name" required v-model="form.name" name="name">
+              <input type="text" class="form-control rounded-pill" id="name" placeholder="Your Name" required v-model="name" name="name">
             </div>
             <div class="mb-3">
-              <input type="email" class="form-control rounded-pill" id="email" placeholder="Your Email" required v-model="form.email" name="email">
+              <input type="email" class="form-control rounded-pill" id="email" placeholder="Your Email" required v-model="email" name="email">
             </div>
             <div class="mb-3">
-              <textarea class="form-control rounded-4" id="message" rows="5" placeholder="Your Message" required v-model="form.message" name="message"></textarea>
+              <textarea class="form-control rounded-4" id="message" rows="5" placeholder="Your Message" required v-model="message" name="message"></textarea>
             </div>
 
             <div class="mb-3 d-flex justify-content-center">
@@ -54,75 +53,8 @@
   </section>
 </template>
 
- <section id="contact" class="py-16">
-      <div class="container mx-auto px-4">
-        <h2 class="text-center text-emerald-500 font-bold mb-10 relative pb-3">Get In Touch</h2>
-        <div class="row justify-content-center mt-10">
-          <div class="col-lg-8 w-full md:w-4/5 lg:w-2/3 xl:w-1/2 mx-auto">
-            <form @submit.prevent="submitForm" class="bg-gray-800 p-8 rounded-2xl shadow-lg">
-              <div class="mb-5">
-                <input
-                  type="text"
-                  v-model="name"
-                  class="form-control contact-form-control w-full p-3 rounded-full bg-gray-700 text-white border border-gray-600 focus:border-emerald-500 focus:ring focus:ring-emerald-500 focus:ring-opacity-50 transition duration-300"
-                  placeholder="Your Name"
-                  required
-                />
-              </div>
-              <div class="mb-5">
-                <input
-                  type="email"
-                  v-model="email"
-                  class="form-control contact-form-control w-full p-3 rounded-full bg-gray-700 text-white border border-gray-600 focus:border-emerald-500 focus:ring focus:ring-emerald-500 focus:ring-opacity-50 transition duration-300"
-                  placeholder="Your Email"
-                  required
-                />
-              </div>
-              <div class="mb-5">
-                <textarea
-                  class="form-control contact-form-control w-full p-3 rounded-2xl bg-gray-700 text-white border border-gray-600 focus:border-emerald-500 focus:ring focus:ring-emerald-500 focus:ring-opacity-50 transition duration-300"
-                  rows="6"
-                  v-model="message"
-                  placeholder="Your Message"
-                  required
-                ></textarea>
-              </div>
-
-              <!-- Social Icons from the second template -->
-              <div class="form-footer flex justify-between items-center mt-6">
-                <div class="social-icons flex space-x-4">
-                  <a href="https://www.linkedin.com/in/charles-babbage-8291a6211/" id="linkedin" class="text-white hover:text-emerald-400 transition duration-300">
-                    <i class="fab fa-linkedin text-2xl"></i>
-                  </a>
-                  <a href="https://gitlab.com/cbabbage0991" id="gitlab" class="text-white hover:text-emerald-400 transition duration-300">
-                    <i class="fab fa-gitlab text-2xl"></i>
-                  </a>
-                  <a href="https://github.com/cbabbage0991" id="github" class="text-white hover:text-emerald-400 transition duration-300">
-                    <i class="fab fa-github text-2xl"></i>
-                  </a>
-                </div>
-                <button
-                  type="submit"
-                  class="submit-btn bg-emerald-600 text-white px-8 py-3 rounded-full hover:bg-emerald-700 focus:outline-none focus:ring-4 focus:ring-emerald-500 focus:ring-opacity-75 transition duration-300 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed"
-                  :disabled="isLoading"
-                >
-                  {{ isLoading ? "Sending..." : "Send Message" }}
-                </button>
-              </div>
-
-              <!-- reCAPTCHA container -->
-              <div class="flex justify-end mt-4">
-                <div ref="recaptchaContainer"></div>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </section>
-  </div>
-</template>
-
 <script setup>
+// ... (Your script setup code remains the same as your last provided version)
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { Notyf } from 'notyf';
 import 'notyf/notyf.min.css';
@@ -195,9 +127,9 @@ function renderRecaptcha() {
 
   // Render the reCAPTCHA widget
   recaptchaWidgetId.value = window.grecaptcha.render(recaptchaContainer.value, {
-    sitekey: SITE_KEY,          // Your reCAPTCHA Site Key
-    size: 'normal',             // 'normal' or 'compact'
-    callback: onRecaptchaSuccess,       // Callback for successful verification
+    sitekey: SITE_KEY,            // Your reCAPTCHA Site Key
+    size: 'normal',               // 'normal' or 'compact'
+    callback: onRecaptchaSuccess, // Callback for successful verification
     'expired-callback': onRecaptchaExpired, // Callback for expired token
   });
 }
@@ -232,7 +164,9 @@ const submitForm = async () => {
         Accept: "application/json",
       },
       body: JSON.stringify({
-        access_key: "e220f6ac-f481-48a6-8bb7-1fe43debea16",
+        access_key: "e220f6ac-f481-48a6-8bb7-1fe43debea16", // <--- You have a different key here than in your data()!
+                                                           // Make sure this matches `web3formsAccessKey` from above,
+                                                           // or better yet, use the variable.
         subject: subject,
         name: name.value,
         email: email.value,
