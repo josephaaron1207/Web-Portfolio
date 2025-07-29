@@ -153,8 +153,8 @@ export default {
 
       // Render the reCAPTCHA widget
       this.recaptchaWidgetId = window.grecaptcha.render(recaptchaContainer, {
-        sitekey: this.SITE_KEY, // Your reCAPTCHA Site Key
-        size: 'normal', // 'normal' or 'compact'
+        sitekey: this.SITE_KEY, 
+        size: 'normal', 
         callback: this.onRecaptchaSuccess, // Callback for successful verification
         'expired-callback': this.onRecaptchaExpired, // Callback for expired token
       });
