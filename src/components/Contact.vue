@@ -1,29 +1,31 @@
 <template>
-  <section id="contact" class="py-5 bg-light">
+  <section id="contact" class="py-5 contact-section">
     <div class="container">
       <!-- Title -->
       <div class="text-center mb-5">
-        <h1 class="fw-bold text-dark">Get in Touch</h1>
-        <p class="text-muted">I’d love to hear from you! Fill out the form and I’ll get back to you soon.</p>
+        <h1 class="fw-bold text-white">Get in Touch</h1>
+        <p class="text-light opacity-90">
+          I’d love to hear from you! Fill out the form and I’ll get back to you soon.
+        </p>
       </div>
 
-      <div class="row g-5 align-items-center">
+      <div class="row g-5 align-items-stretch">
         <!-- Map -->
-        <div class="col-lg-6">
-          <div class="ratio ratio-4x3 rounded shadow-sm overflow-hidden">
+        <div class="col-lg-6 d-flex">
+          <div class="card flex-fill shadow-sm rounded overflow-hidden">
             <iframe
               id="gmap_canvas"
               src="https://maps.google.com/maps?q=centro%20escolar%20university%20manila&t=&z=13&ie=UTF8&iwloc=&output=embed"
               frameborder="0"
-              style="border:0;"
+              style="border:0; width:100%; height:100%;"
               allowfullscreen
             ></iframe>
           </div>
         </div>
 
         <!-- Form -->
-        <div class="col-lg-6">
-          <form @submit.prevent="submitForm" class="bg-white p-4 rounded shadow contact-form">
+        <div class="col-lg-6 d-flex">
+          <form @submit.prevent="submitForm" class="card flex-fill p-4 rounded shadow contact-form text-white">
             <div class="mb-3">
               <input
                 type="text"
@@ -67,7 +69,7 @@
               </div>
               <button
                 type="submit"
-                class="btn btn-dark btn-lg px-5 submit-btn"
+                class="btn btn-lg px-5 submit-btn"
                 :disabled="isLoading"
               >
                 <span v-if="isLoading">Sending...</span>
@@ -181,27 +183,45 @@ onMounted(() => {
 </script>
 
 <style scoped>
+.contact-section {
+  background-color: #00896f;
+}
+
+.contact-form {
+  background-color: #343a40 !important;
+  color: #fff;
+}
+
 .contact-form input,
 .contact-form textarea {
   background-color: #f8f9fa;
-  border: 1px solid #ced4da;
+  border: none;
+  color: #343a40;
   transition: border-color 0.3s, box-shadow 0.3s;
 }
 
 .contact-form input:focus,
 .contact-form textarea:focus {
-  border-color: #20c997;
-  box-shadow: 0 0 8px rgba(32, 201, 151, 0.3);
+  border: 2px solid #20c997;
+  box-shadow: 0 0 8px rgba(32, 201, 151, 0.4);
   outline: none;
 }
 
 /* Submit Button */
 .submit-btn {
+  background-color: #20c997;
+  color: #fff;
   transition: background-color 0.3s, transform 0.3s;
 }
 .submit-btn:hover {
-  background-color: #20c997 !important;
+  background-color: #17a589;
   transform: translateY(-2px);
+}
+
+/* Equal height for map and form */
+.card {
+  flex: 1 1 auto;
+  height: 100%;
 }
 
 /* Social Icons */
