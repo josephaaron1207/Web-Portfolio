@@ -1,63 +1,3 @@
-<template>
-  <section id="contacts">
-    <div class="container my-5">
-      <div class="row text-center mb-4">
-        <div class="col-12">
-          <h1>Let's Connect</h1>
-        </div>
-      </div>
-
-      <div class="row flex-column flex-md-row text-center text-md-start">
-        <div class="col-md-6 mb-4 mb-md-0">
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15449.692608035783!2d120.98595705!3d14.50742585!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397cd3bb8a0d4c1%3A0xc3f8e5b6a7a0e2d!2sPara%C3%B1aque%20City%2C%20Metro%20Manila!5e0!3m2!1sen!2sph!4v1722204434567!5m2!1sen!2sph"
-            class="map-frame w-100 rounded"
-            height="450"
-            allowfullscreen=""
-            loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade">
-          </iframe>
-        </div>
-
-        <div class="col-md-6" id="form-col">
-          <form @submit.prevent="submitForm" class="form p-4 rounded text-light">
-            <div class="mb-3">
-              <label for="name" class="form-label">Name</label>
-              <input type="text" v-model="name" class="form-control" id="name" placeholder="Your Name" required>
-            </div>
-            <div class="mb-3">
-              <label for="email" class="form-label">Email address</label>
-              <input type="email" v-model="email" class="form-control" id="email" placeholder="name@example.com" required>
-            </div>
-            <div class="mb-3">
-              <label for="message" class="form-label">Message</label>
-              <textarea v-model="message" class="form-control" id="message" rows="5" required></textarea>
-            </div>
-
-            <div class="d-flex flex-wrap align-items-center justify-content-between">
-              <div class="d-flex gap-3 mb-3">
-                <a href="https://github.com/PeterJayson13" target="_blank"><img src="/images/Github.png" class="img-fluid social-icon" alt="GitHub"></a>
-                <a href="https://gitlab.com/peterbongabong7" target="_blank"><img src="/images/Gitlab.png" class="img-fluid social-icon" alt="GitLab"></a>
-                <a href="https://www.linkedin.com/in/peter-jayson-bongabong-b43793365/" target="_blank"><img src="/images/Linkedin.png" class="img-fluid social-icon" alt="LinkedIn"></a>
-              </div>
-              <div>
-                <button type="submit" class="submit-btn btn-custom" :disabled="isLoading || !recaptchaToken">
-                  {{ isLoading ? "Sending..." : "Submit" }}
-                </button>
-
-                <div class="d-flex justify-content-end mt-2">
-                    <div v-if="recaptchaLoaded" ref="recaptchaContainer"></div>
-                    <div v-else>Loading reCAPTCHA...</div>
-                </div>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </section>
-</template>
-
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { Notyf } from 'notyf';
@@ -65,13 +5,17 @@ import 'notyf/notyf.min.css';
 
 const notyf = new Notyf();
 const WEB3FORMS_ACCESS_KEY = "31457fb4-8955-4f56-9efd-7684210a1b64";
-const SITE_KEY = '6LdgtZIrAAAAAG7QHntHbxhxUWFOHJQACKCfdyiZ'; // Replace with your site key
+const SITE_KEY = '6LdgtZIrAAAAAG7QHntHbxhxUWFOHJQACKCfdyiZ';
 
 const subject = "New message from portfolio contact form";
 
+// --- IMPORTANT: Add console.log statements right after initialization ---
 const name = ref("");
+console.log('Contact.vue: Initialized name ref:', name.value); // CHECK 1
 const email = ref("");
+console.log('Contact.vue: Initialized email ref:', email.value); // CHECK 2
 const message = ref("");
+console.log('Contact.vue: Initialized message ref:', message.value); // CHECK 3
 
 const isLoading = ref(false);
 const recaptchaLoaded = ref(false);
@@ -80,28 +24,24 @@ const recaptchaContainer = ref(null);
 const recaptchaWidgetId = ref(null);
 const recaptchaToken = ref('');
 
-// --- reCAPTCHA Integration ---
-
-// This global function is called by reCAPTCHA script once it's loaded
-// We need to ensure it's defined before the script tries to call it.
 window.vueRecaptchaOnload = () => {
   if (window._recaptchaLoadResolve) {
     window._recaptchaLoadResolve();
-    delete window._recaptchaLoadResolve; // Clean up
+    delete window._recaptchaLoadResolve;
   }
 };
 
-let recaptchaScriptLoaded = false; // To prevent loading the script multiple times
+let recaptchaScriptLoaded = false;
 
 function loadRecaptchaScript() {
   return new Promise((resolve, reject) => {
-    if (window.grecaptcha && recaptchaScriptLoaded) { // Already loaded and API available
+    if (window.grecaptcha && recaptchaScriptLoaded) {
       resolve();
       return;
     }
-    if (document.querySelector(`script[src*="${SITE_KEY}"]`)) { // Script tag might exist but not loaded yet
+    if (document.querySelector(`script[src*="${SITE_KEY}"]`)) {
         recaptchaScriptLoaded = true;
-        window._recaptchaLoadResolve = resolve; // Store resolve for global callback
+        window._recaptchaLoadResolve = resolve;
         return;
     }
 
@@ -113,23 +53,18 @@ function loadRecaptchaScript() {
     document.head.appendChild(script);
 
     recaptchaScriptLoaded = true;
-    window._recaptchaLoadResolve = resolve; // Store resolve for global callback
+    window._recaptchaLoadResolve = resolve;
   });
 }
 
-// Callback called by reCAPTCHA when successful
 function onRecaptchaSuccess(token) {
   recaptchaToken.value = token;
-  // console.log('reCAPTCHA token:', token); // For debugging
 }
 
-// Callback when expired
 function onRecaptchaExpired() {
   recaptchaToken.value = '';
-  // console.warn('reCAPTCHA token expired.');
 }
 
-// Function to render the reCAPTCHA widget
 function renderRecaptcha() {
   if (!window.grecaptcha) {
     console.error('reCAPTCHA API not available to render.');
@@ -139,38 +74,37 @@ function renderRecaptcha() {
     console.error('reCAPTCHA container DOM element is null. Cannot render.');
     return;
   }
-
-  // console.log('Attempting to render reCAPTCHA into:', recaptchaContainer.value); // For debugging
-
   recaptchaWidgetId.value = window.grecaptcha.render(recaptchaContainer.value, {
     sitekey: SITE_KEY,
-    size: 'normal', // or 'compact'
+    size: 'normal',
     callback: onRecaptchaSuccess,
     'expired-callback': onRecaptchaExpired,
   });
-  recaptchaLoaded.value = true; // Indicate that the widget has been rendered
+  recaptchaLoaded.value = true;
 }
 
-// Function to reset reCAPTCHA
 function resetRecaptcha() {
   if (recaptchaWidgetId.value !== null && window.grecaptcha) {
     window.grecaptcha.reset(recaptchaWidgetId.value);
     recaptchaToken.value = '';
-    // console.log('reCAPTCHA reset.'); // For debugging
   }
 }
 
-// --- Form Submission Logic ---
 const submitForm = async () => {
-    // Basic form validation (optional, can be expanded)
+    // Basic form validation
+    // --- IMPORTANT: Add console.log before validation checks ---
+    console.log('submitForm called. Name:', name.value); // CHECK 4
+    console.log('submitForm called. Email:', email.value); // CHECK 5
+    console.log('submitForm called. Message:', message.value); // CHECK 6
+
     if (!name.value || !email.value || !message.value) {
         notyf.error('Please fill in all required fields.');
         return;
     }
 
-    // Defensive check for potential undefined refs (shouldn't happen with v-model, but good for debugging)
+    // Defensive check (should catch the error if it happens here)
     if (name.value === undefined || email.value === undefined || message.value === undefined) {
-        console.error("Critical Error: Form field ref is undefined before submission!");
+        console.error("Critical Error: Form field ref is undefined before submission payload creation!");
         notyf.error("An internal form error occurred. Please refresh and try again.");
         return;
     }
@@ -181,12 +115,6 @@ const submitForm = async () => {
     }
 
     isLoading.value = true;
-    // console.log("Submitting form with data:", {
-    //     name: name.value,
-    //     email: email.value,
-    //     message: message.value,
-    //     recaptchaToken: recaptchaToken.value
-    // }); // For debugging
 
     try {
         const response = await fetch("https://api.web3forms.com/submit", {
@@ -198,17 +126,16 @@ const submitForm = async () => {
             body: JSON.stringify({
                 access_key: WEB3FORMS_ACCESS_KEY,
                 subject: subject,
-                name: name.value,
-                email: email.value,
-                message: message.value,
-                "g-recaptcha-response": recaptchaToken.value, // Send the reCAPTCHA token
+                name: name.value,   // Line of interest
+                email: email.value, // Line of interest
+                message: message.value, // Line of interest
+                "g-recaptcha-response": recaptchaToken.value,
             }),
         });
         const result = await response.json();
 
         if (result.success) {
             notyf.success("Message Sent!");
-            // Clear form fields
             name.value = "";
             email.value = "";
             message.value = "";
@@ -225,57 +152,30 @@ const submitForm = async () => {
         notyf.error("Failed to send message. Please check your internet connection.");
     } finally {
         isLoading.value = false;
-        resetRecaptcha(); // Always reset reCAPTCHA after submission attempt
+        resetRecaptcha();
     }
 }
 
-// --- Lifecycle Hooks ---
 onMounted(async () => {
   try {
     await loadRecaptchaScript();
-    // Give a small delay to ensure the DOM element is fully rendered and accessible
-    // before grecaptcha.render is called.
-    // This is crucial when the component is mounted and then the ref needs time to point to the DOM element.
     setTimeout(() => {
         if (recaptchaContainer.value) {
             renderRecaptcha();
         } else {
             console.error("reCAPTCHA container not available after timeout. Check DOM rendering.");
         }
-    }, 100); // Increased delay slightly
+    }, 100);
   } catch (error) {
     console.error("Failed to load reCAPTCHA script:", error);
     notyf.error("Failed to load reCAPTCHA. Please try refreshing the page.");
-    recaptchaLoaded.value = false; // Ensure UI reflects load failure
+    recaptchaLoaded.value = false;
   }
 });
 
 onBeforeUnmount(() => {
-  // Clear the interval if it was ever used (though now using Promise based approach)
-  // And clean up global callback if necessary, though not strictly required for this pattern
   if (window._recaptchaLoadResolve) {
     delete window._recaptchaLoadResolve;
   }
 });
 </script>
-
-<style scoped>
-.form {
-  background-color: darkgray;
-}
-.social-icon {
-  height: 40px;
-}
-.map-frame {
-  border: 0;
-}
-.btn-custom {
-  background-color: #fb5607;
-  color: white;
-  border: 1px solid #fb5607;
-}
-.btn-custom:hover {
-  background-color: #d94a06;
-  border: 1px solid #d94a06;
-}
-</style>
