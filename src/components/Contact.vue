@@ -186,20 +186,20 @@ export default {
 
       this.isLoading = true; // Show loading state
       try {
+        // Use FormData instead of JSON.stringify for Web3Forms
+        const formData = new FormData();
+        formData.append("access_key", this.WEB3FORMS_ACCESS_KEY);
+        formData.append("subject", this.subject);
+        formData.append("name", this.form.name);
+        formData.append("email", this.form.email);
+        formData.append("message", this.form.message);
+        formData.append("g-recaptcha-response", this.recaptchaToken);
+
         const response = await fetch("https://api.web3forms.com/submit", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-          },
-          body: JSON.stringify({
-            access_key: this.WEB3FORMS_ACCESS_KEY,
-            subject: this.subject,
-            name: this.form.name,
-            email: this.form.email,
-            message: this.form.message,
-            "g-recaptcha-response": this.recaptchaToken, // Include the reCAPTCHA token
-          }),
+          // When using FormData, the 'Content-Type' header is automatically set to 'multipart/form-data'
+          // Do NOT set 'Content-Type': 'application/json' when using FormData.
+          body: formData,
         });
         const result = await response.json();
 
