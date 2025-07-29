@@ -15,7 +15,7 @@
           <div class="card flex-fill shadow-sm rounded overflow-hidden">
             <iframe
               id="gmap_canvas"
-              src="https://maps.google.com/maps?q=centro%20escolar%20university%20manila&t=&z=13&ie=UTF8&iwloc=&output=embed"
+             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15452.310094186221!2d120.995344463042!3d14.480237771356899!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397ce7de2da5bbd%3A0xc4f1845e91886224!2sSM%20City%20Sucat!5e0!3m2!1sen!2sph!4v1753782561410!5m2!1sen!2sph" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
               frameborder="0"
               style="border:0; width:100%; height:100%;"
               allowfullscreen
