@@ -71,115 +71,163 @@
   </div>
 </template>
 
-<script setup>
-    import { ref, onMounted, onBeforeUnmount } from 'vue';
-    import { Notyf } from 'notyf';
-    import 'notyf/notyf.min.css';
+<script>
+import { Notyf } from 'notyf';
+import 'notyf/notyf.min.css';
 
-    const notyf = new Notyf();
-    const WEB3FORMS_ACCESS_KEY = "b40ddd06-4cec-4e0f-9f1e-6261b87d1125";
+export default {
+  name: 'Contact',
+  data() {
+    return {
+      form: {
+        name: '',
+        email: '',
+        message: '',
+      },
+      isLoading: false,
+      // IMPORTANT: Replace with your actual Web3Forms Access Key
+      WEB3FORMS_ACCESS_KEY: "951c837b-2583-4a17-b896-758c5a65320a",
+      subject: "New message from portfolio contact form",
+      notyf: null, // Notyf instance will be initialized in mounted hook
+      // IMPORTANT: Replace with your actual reCAPTCHA v2 Site Key
+      SITE_KEY: '6LdgtZIrAAAAAG7QHntHbxhxUWFOHJQACKCfdyiZ',
+      recaptchaWidgetId: null, // To store the ID of the rendered reCAPTCHA widget
+      recaptchaToken: '', // To store the reCAPTCHA token after successful verification
+    };
+  },
+  mounted() {
+    // Initialize Notyf for notifications
+    this.notyf = new Notyf({
+      duration: 3000,
+      position: {
+        x: 'right',
+        y: 'top',
+      },
+      types: [
+        { type: 'success', background: '#5cb85c', icon: '<i class="fas fa-check-circle"></i>' },
+        { type: 'error', background: '#d9534f', icon: '<i class="fas fa-times-circle"></i>' }
+      ]
+    });
 
-    const subject = "New message from portfolio contact form";
+    // --- reCAPTCHA Integration: Render widget once grecaptcha is loaded ---
+    // This interval checks if the grecaptcha object is available (meaning the script has loaded)
+    // and then proceeds to render the reCAPTCHA widget.
+    const interval = setInterval(() => {
+      if (window.grecaptcha && window.grecaptcha.render) {
+        this.renderRecaptcha(); // Call the method to render the widget
+        clearInterval(interval); // Stop the interval once rendered
+      }
+    }, 100); // Check every 100ms
+  },
+  methods: {
+    /**
+     * Callback function for reCAPTCHA when verification is successful.
+     * The token is received as an argument.
+     * @param {string} token - The reCAPTCHA verification token.
+     */
+    onRecaptchaSuccess(token) {
+      this.recaptchaToken = token; // Store the token in component data
+    },
 
-    const name = ref("");
-    const email = ref("");
-    const message = ref("");
+    /**
+     * Callback function for reCAPTCHA when the token expires.
+     * Clears the stored token.
+     */
+    onRecaptchaExpired() {
+      this.recaptchaToken = ''; // Clear the token
+      this.notyf.error('reCAPTCHA expired. Please re-verify.');
+    },
 
-    const isLoading = ref(false);
-
-    const submitForm = async () => {
-        // Set the loading state to true.
-        if ( !recaptchaToken.value){
-            notyf.error('Please verify that you are not a robot.');
-            return;
-        }
-        isLoading.value = true;
-        try{
-
-    const response = await fetch("https://api.web3forms.com/submit", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Accept: "application/json",
-                },
-                body: JSON.stringify({
-                    access_key: WEB3FORMS_ACCESS_KEY,
-                    subject: subject,
-                    name: name.value,
-                    email: email.value,
-                    message: message.value,
-                }),
-            });
-            const result = await response.json();
-            if (result.success) {
-                console.log(result);
-                // Set the loading state to false.
-                isLoading.value = false;
-                notyf.success("Message Sent!");
-                }
-            } catch (error) {
-                    console.log(error);
-                    isLoading.value = false;
-                    notyf.error("Failed to send message.");
-                } finally {
-                    resetRecaptcha();
-                }
-            }
-
-    const SITE_KEY = '6LdgtZIrAAAAAG7QHntHbxhxUWFOHJQACKCfdyiZ';  // Replace with your site key
-
-    const recaptchaContainer = ref(null);
-    const recaptchaWidgetId = ref(null);
-    const recaptchaToken = ref('');
-
-    // Callback called by reCAPTCHA when successful
-    function onRecaptchaSuccess(token) {
-      recaptchaToken.value = token;
-    }
-
-    // Callback when expired
-    function onRecaptchaExpired() {
-      recaptchaToken.value = '';
-    }
-
-    // Function to render the reCAPTCHA widget
-    function renderRecaptcha() {
+    /**
+     * Renders the reCAPTCHA widget into the designated container.
+     */
+    renderRecaptcha() {
+      // Ensure the reCAPTCHA container element exists using $refs
+      const recaptchaContainer = this.$refs.recaptchaContainer;
+      if (!recaptchaContainer) {
+        console.error('reCAPTCHA container element not found. Make sure <div ref="recaptchaContainer"></div> exists in your template.');
+        return;
+      }
+      // Ensure grecaptcha object is loaded
       if (!window.grecaptcha) {
-        console.error('reCAPTCHA not loaded');
+        console.error('Google reCAPTCHA script not loaded. Please add it to your index.html.');
         return;
       }
 
-      recaptchaWidgetId.value = window.grecaptcha.render(recaptchaContainer.value, {
-        sitekey: SITE_KEY,
-        size: 'normal', // or 'compact'
-        callback: onRecaptchaSuccess,
-        'expired-callback': onRecaptchaExpired,
+      // Render the reCAPTCHA widget
+      this.recaptchaWidgetId = window.grecaptcha.render(recaptchaContainer, {
+        sitekey: this.SITE_KEY,
+        size: 'normal',
+        callback: this.onRecaptchaSuccess, // Callback for successful verification
+        'expired-callback': this.onRecaptchaExpired, // Callback for expired token
       });
-    }
+    },
 
-    // Function to reset reCAPTCHA 
-    function resetRecaptcha() {
-      if (recaptchaWidgetId.value !== null) {
-        window.grecaptcha.reset(recaptchaWidgetId.value);
-        recaptchaToken.value = '';
+    /**
+     * Resets the reCAPTCHA widget, clearing the current token.
+     */
+    resetRecaptcha() {
+      if (this.recaptchaWidgetId !== null && window.grecaptcha) {
+        window.grecaptcha.reset(this.recaptchaWidgetId);
+        this.recaptchaToken = ''; // Also clear the internal token state
+      }
+    },
+
+    /**
+     * Handles the form submission process.
+     * Sends form data and reCAPTCHA token to Web3Forms.
+     */
+    async submitForm() {
+      // Prevent form submission if reCAPTCHA hasn't been verified
+      if (!this.recaptchaToken) {
+        this.notyf.error('Please verify that you are not a robot.');
+        return; // Stop the function execution
+      }
+
+      this.isLoading = true; // Show loading state
+      try {
+        const response = await fetch("https://api.web3forms.com/submit", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+          },
+          body: JSON.stringify({
+            access_key: this.WEB3FORMS_ACCESS_KEY,
+            subject: this.subject,
+            name: this.form.name,
+            email: this.form.email,
+            message: this.form.message,
+            "g-recaptcha-response": this.recaptchaToken, // Include the reCAPTCHA token
+          }),
+        });
+        const result = await response.json();
+
+        if (response.ok && result.success) { // Check response.ok for HTTP success
+          console.log("Form submission successful:", result);
+          this.notyf.success("Message Sent!");
+          // Clear form fields after successful submission
+          this.form.name = '';
+          this.form.email = '';
+          this.form.message = '';
+        } else {
+          // Log the actual error from Web3Forms for debugging
+          console.error("Web3Forms error:", result);
+          // Provide more specific error message if available from Web3Forms
+          const errorMessage = result.message || "Failed to send message.";
+          this.notyf.error(errorMessage);
+        }
+      } catch (error) {
+        // Log network or other unexpected errors
+        console.error("Form submission error:", error);
+        this.notyf.error("Failed to send message. Please try again later.");
+      } finally {
+        this.isLoading = false; // Always disable loading state
+        this.resetRecaptcha(); // Reset reCAPTCHA regardless of outcome
       }
     }
-
-    onMounted(() => {
-
-    const interval = setInterval(() => {
-        if (window.grecaptcha && window.grecaptcha.render) {
-          renderRecaptcha();
-          clearInterval(interval);
-        }
-      }, 100);
-
-      onBeforeUnmount(() => {
-        clearInterval(interval);
-      });
-    });
-
-
+  }
+};
 </script>
 
 <style scoped>
