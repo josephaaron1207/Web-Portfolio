@@ -1,0 +1,50 @@
+body {
+  font-family: 'Montserrat', sans-serif;
+  color: white;
+  background-color: #00896f; /* Set a default background color */
+}
+
+h2 {
+  font-weight: 700;
+  color: #007bff;
+  margin-bottom: 40px;
+  text-align: center;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+/* Base styles for sections, buttons, etc. */
+.hero-section {
+  background: #00896f;
+  color: white;
+  padding: 100px 0;
+  text-align: center;
+  border-bottom-left-radius: 50px;
+  border-bottom-right-radius: 50px;
+}
+.hero-section h1 {
+  font-size: 3.5rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+.hero-section p {
+  font-size: 1.25rem;
+  margin-bottom: 30px;
+}
+.btn-primary-custom {
+  background-color: #fff;
+  color: #00896f;
+  border: 2px solid #fff;
+  padding: 12px 30px;
+  border-radius: 30px;
+  transition: all 0.3s ease;
+}
+.btn-primary-custom:hover {
+  background-color: #007b5e;
+  color: #fff;
+  border-color: #007b5e;
+  box-shadow: 0 4px 8px rgba(0, 123, 111, 0.4);
+}
+a {
+  text-decoration: none;
+}
