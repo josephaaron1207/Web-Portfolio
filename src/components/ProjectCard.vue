@@ -34,6 +34,8 @@ export default {
   display: flex;
   flex-direction: column;
   overflow: hidden; /* Added to contain the image scale effect */
+  background-color: #343a40; /* Set the card background color */
+  color: white; /* Ensure text is readable on the dark background */
 }
 .card:hover {
   transform: translateY(-5px);
@@ -54,11 +56,26 @@ export default {
 .card-img-top {
   width: 100%;
   height: 200px;
-  object-fit: cover;
-  border-radius: 15px;
+  object-fit: contain; /* Changed from 'cover' to 'contain' */
+  background-color: #f8f9fa; /* Optional: Add a background color for transparent images */
+  border-radius: 15px 15px 0 0; /* Keep top corners rounded */
   transition: transform 0.5s ease-in-out; /* UI Improvement: Smoother transition */
 }
 .card:hover .card-img-top {
   transform: scale(1.1);
 }
-</style>
+/* Ensure text colors are suitable for the dark background */
+.card-title {
+  color: white;
+}
+.card-text {
+  color: #cccccc; /* Slightly lighter white for description */
+}
+.card-body a {
+  color: #007bff; /* Bootstrap primary blue for links */
+  border-color: #007bff;
+}
+.card-body a:hover {
+  color: #0056b3; /* Darker blue on hover for links */
+  border-color: #0056b3;
+}
