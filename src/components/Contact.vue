@@ -78,16 +78,12 @@ export default {
         message: '',
       },
       isLoading: false,
-      // IMPORTANT: Replace with your actual Web3Forms Access Key
-      WEB3FORMS_ACCESS_KEY: "951c837b-2583-4a17-b896-758c5a65320a",
-      subject: "New message from portfolio contact form",
+      // WEB3FORMS_ACCESS_KEY and subject removed
       notyf: null, // Notyf instance will be initialized in mounted hook
-      // reCAPTCHA properties removed
     };
   },
   mounted() {
     // Initialize Notyf for notifications using the global Notyf object
-    // Ensure Notyf is loaded via CDN in index.html for this to work
     if (window.Notyf) {
       this.notyf = new window.Notyf({
         duration: 3000,
@@ -103,54 +99,34 @@ export default {
     } else {
       console.error('Notyf is not loaded. Please ensure the Notyf CDN script is included in index.html.');
     }
-
-    // reCAPTCHA Integration logic removed
   },
   methods: {
-    // reCAPTCHA callback methods removed
-    
     /**
      * Handles the form submission process.
-     * Sends form data to Web3Forms.
+     * (Currently simulates success as Web3Forms is removed).
      */
     async submitForm() {
       this.isLoading = true; // Show loading state
       try {
-        const formData = new FormData();
-        formData.append("access_key", this.WEB3FORMS_ACCESS_KEY);
-        formData.append("subject", this.subject);
-        formData.append("name", this.form.name);
-        formData.append("email", this.form.email);
-        formData.append("message", this.form.message);
-        // reCAPTCHA token append removed
+        // Log the form data to console instead of sending to Web3Forms
+        console.log("Form data submitted:", this.form);
 
-        const response = await fetch("https://api.web3forms.com/submit", {
-          method: "POST",
-          body: formData,
-        });
-        const result = await response.json();
+        // Simulate an asynchronous operation (e.g., if you were to send to your own backend)
+        await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate 1 second delay
 
-        if (response.ok && result.success) { // Check response.ok for HTTP success
-          console.log("Form submission successful:", result);
-          this.notyf.success("Message Sent!");
-          // Clear form fields after successful submission
-          this.form.name = '';
-          this.form.email = '';
-          this.form.message = '';
-        } else {
-          // Log the actual error from Web3Forms for debugging
-          console.error("Web3Forms error:", result);
-          // Provide more specific error message if available from Web3Forms
-          const errorMessage = result.message || "Failed to send message.";
-          this.notyf.error(errorMessage);
-        }
+        // Simulate success
+        this.notyf.success("Message Sent! (Simulated)");
+        // Clear form fields after successful submission
+        this.form.name = '';
+        this.form.email = '';
+        this.form.message = '';
+
       } catch (error) {
-        // Log network or other unexpected errors
-        console.error("Form submission error:", error);
-        this.notyf.error("Failed to send message. Please try again later.");
+        // This catch block would be for your own backend errors, or unexpected client-side issues
+        console.error("Form submission error (simulated):", error);
+        this.notyf.error("Failed to send message. Please try again later. (Simulated Error)");
       } finally {
         this.isLoading = false; // Always disable loading state
-        // reCAPTCHA reset removed
       }
     }
   }
@@ -192,6 +168,4 @@ export default {
   box-shadow: 0 0 0 0.25rem rgba(0, 137, 111, 0.25);
   background-color: #ffffff;
 }
-
-/* reCAPTCHA placeholder style removed */
 </style>
