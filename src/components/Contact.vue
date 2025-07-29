@@ -9,13 +9,14 @@
       <div class="row justify-content-center">
         <div class="col-lg-8 m-4">
           <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15452.43988643541!2d121.00358374543454!3d14.47837411594325!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397ce7de2da5bbd%3A0xc4f1845e91886224!2sSM%20City%20Sucat!5e0!3m2!1sen!2sph!4v1750151542839!5m2!1sen!2sph"
+            src="YOUR_Maps_EMBED_URL_HERE"
             width="100%"
             height="400"
             style="border: 0"
             allowfullscreen=""
             loading="lazy"
             referrerpolicy="no-referrer-when-downgrade"
+            title="Our Location on Google Maps"
           >
           </iframe>
         </div>
@@ -54,16 +55,13 @@
               <div class="mb-3">
                 <textarea class="form-control rounded-4" id="message" rows="5" v-model="form.message" placeholder="Your Message" required></textarea>
               </div>
-              <div class="d-flex justify-content-end mt-2">
-                  <div ref="recaptchaContainer"></div>
+              <div class="d-flex justify-content-start mt-2">
+                <div ref="recaptchaContainer"></div>
               </div>
               <div class="text-center mt-3">
                 <button type="submit" class="submit-btn btn-primary-custom" :disabled="isLoading">{{isLoading ? "Sending..." : "Send Message"}}</button>
               </div>
             </form>
-            <div class="d-flex justify-content-end mt-2">
-                                <div ref="recaptchaContainer"></div>
-                            </div>
           </div>
         </div>
       </div>
@@ -85,10 +83,11 @@ export default {
         message: '',
       },
       isLoading: false,
-      WEB3FORMS_ACCESS_KEY: "951c837b-2583-4a17-b896-758c5a65320a", // Your Web3Forms Access Key
+      // Access keys from environment variables
+      WEB3FORMS_ACCESS_KEY: process.env.VUE_APP_WEB3FORMS_ACCESS_KEY,
       subject: "New message from portfolio contact form",
       notyf: null, // Notyf instance will be initialized in mounted hook
-      SITE_KEY: '6LdgtZIrAAAAAG7QHntHbxhxUWFOHJQACKCfdyiZ', // Your reCAPTCHA v2 Site Key
+      SITE_KEY: process.env.VUE_APP_RECAPTCHA_SITE_KEY, // reCAPTCHA v2 Site Key from environment variables
       recaptchaWidgetId: null, // To store the ID of the rendered reCAPTCHA widget
       recaptchaToken: '', // To store the reCAPTCHA token after successful verification
     };
@@ -107,15 +106,12 @@ export default {
       ]
     });
 
-    // --- reCAPTCHA Integration: Render widget once grecaptcha is loaded ---
-    // This interval checks if the grecaptcha object is available (meaning the script has loaded)
-    // and then proceeds to render the reCAPTCHA widget.
-    const interval = setInterval(() => {
-      if (window.grecaptcha && window.grecaptcha.render) {
-        this.renderRecaptcha(); // Call the method to render the widget
-        clearInterval(interval); // Stop the interval once rendered
-      }
-    }, 100); // Check every 100ms
+    // Listen for the custom event dispatched when the reCAPTCHA script is fully loaded
+    window.addEventListener('recaptcha-script-loaded', this.renderRecaptcha);
+  },
+  beforeUnmount() {
+    // Clean up the event listener to prevent memory leaks when the component is destroyed
+    window.removeEventListener('recaptcha-script-loaded', this.renderRecaptcha);
   },
   methods: {
     /**
@@ -137,6 +133,7 @@ export default {
 
     /**
      * Renders the reCAPTCHA widget into the designated container.
+     * This method is called once the reCAPTCHA script is loaded via the event listener.
      */
     renderRecaptcha() {
       // Ensure the reCAPTCHA container element exists using $refs
@@ -146,14 +143,14 @@ export default {
         return;
       }
       // Ensure grecaptcha object is loaded
-      if (!window.grecaptcha) {
-        console.error('Google reCAPTCHA script not loaded.');
+      if (!window.grecaptcha || !window.grecaptcha.render) {
+        console.error('Google reCAPTCHA script not loaded or render function is missing.');
         return;
       }
 
       // Render the reCAPTCHA widget
       this.recaptchaWidgetId = window.grecaptcha.render(recaptchaContainer, {
-        sitekey: this.SITE_KEY, // Your reCAPTCHA Site Key
+        sitekey: this.SITE_KEY, // Your reCAPTCHA Site Key from .env
         size: 'normal', // 'normal' or 'compact'
         callback: this.onRecaptchaSuccess, // Callback for successful verification
         'expired-callback': this.onRecaptchaExpired, // Callback for expired token
@@ -164,7 +161,7 @@ export default {
      * Resets the reCAPTCHA widget, clearing the current token.
      */
     resetRecaptcha() {
-      if (this.recaptchaWidgetId !== null) {
+      if (this.recaptchaWidgetId !== null && window.grecaptcha && window.grecaptcha.reset) {
         window.grecaptcha.reset(this.recaptchaWidgetId);
         this.recaptchaToken = ''; // Also clear the internal token state
       }
@@ -210,7 +207,9 @@ export default {
         } else {
           // Log the actual error from Web3Forms for debugging
           console.error("Web3Forms error:", result);
-          this.notyf.error("Failed to send message.");
+          // Use the message from Web3Forms if available, otherwise a generic one
+          const errorMessage = result.message || "Failed to send message. Please try again.";
+          this.notyf.error(errorMessage);
         }
       } catch (error) {
         // Log network or other unexpected errors
@@ -259,5 +258,22 @@ export default {
   border-color: #00896f;
   box-shadow: 0 0 0 0.25rem rgba(0, 137, 111, 0.25);
   background-color: #ffffff;
+}
+
+.submit-btn {
+  background-color: #00896f; /* A shade of green */
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 9999px; /* Fully rounded */
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+  border: none; /* Ensure no default button border */
+}
+.submit-btn:hover:not(:disabled) {
+  background-color: #006f59; /* Darker green on hover */
+}
+.submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 </style>
