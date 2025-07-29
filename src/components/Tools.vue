@@ -61,12 +61,12 @@
 #tools {
   padding: 60px 0;
   text-align: center;
-  background-color: #00896f; /* Changed from #343a40 to green */
-  color: white; /* Changed text color to white for contrast */
+  background-color: #343a40; /* Updated background color */
+  color: #00896f; /* Set a default text color for the section */
   border-radius: 40px;
 }
 #tools h2 {
-  color: white; /* Changed heading color to white for contrast */
+  color: #00896f; /* Updated heading color for readability */
   font-weight: 700;
   margin-bottom: 40px;
   text-align: center;
@@ -81,7 +81,7 @@
   transform: translateX(-50%);
   width: 60px;
   height: 3px;
-  background-color: white; /* Changed underline color to white for contrast */
+  background-color: #00896f; /* Updated underline color for readability */
   border-radius: 2px;
 }
 .tools-grid {
@@ -93,7 +93,7 @@
   padding: 0 15px;
 }
 .category {
-  background-color: white; /* Keep category background white */
+  background-color: white;
   border-radius: 10px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   padding: 30px 20px;
@@ -105,7 +105,7 @@
 }
 .category h2 {
   font-size: 1.8rem;
-  color: #00896f; /* Keep category heading color green, as its background is white */
+  color: #00896f;
   margin-bottom: 25px;
   position: relative;
   padding-bottom: 10px;
@@ -118,7 +118,7 @@
   transform: translateX(-50%);
   width: 60px;
   height: 3px;
-  background-color: #00896f; /* Keep category underline green */
+  background-color: #00896f;
   border-radius: 2px;
 }
 .tool-items {
@@ -140,7 +140,7 @@
   border-radius: 50%;
   object-fit: cover;
   margin-bottom: 10px;
-  border: 3px solid white; /* Changed border color to white for contrast with green background */
+  border: 3px solid #343a40;
   box-shadow: 0 0 0 rgba(0, 137, 111, 0);
   transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
