@@ -54,14 +54,14 @@
               <div class="mb-3">
                 <textarea class="form-control rounded-4" id="message" rows="5" v-model="form.message" placeholder="Your Message" required></textarea>
               </div>
-              <div class="d-flex justify-content-end mt-2">
-                  <div ref="recaptchaContainer"></div>
+              <!-- reCAPTCHA widget will be rendered here -->
+              <div class="d-flex justify-content-center mt-2">
+                <div ref="recaptchaContainer" class="recaptcha-placeholder"></div>
               </div>
-              <div class="d-flex justify-content-start mt-2">
-                                <div ref="recaptchaContainer"></div>
-                            </div>
               <div class="text-center mt-3">
-                <button type="submit" class="submit-btn btn-primary-custom" :disabled="isLoading">{{isLoading ? "Sending..." : "Send Message"}}</button>
+                <button type="submit" class="submit-btn btn-primary-custom" :disabled="isLoading || !recaptchaToken">
+                  {{ isLoading ? "Sending..." : "Send Message" }}
+                </button>
               </div>
             </form>
           </div>
@@ -85,10 +85,12 @@ export default {
         message: '',
       },
       isLoading: false,
-      WEB3FORMS_ACCESS_KEY: "951c837b-2583-4a17-b896-758c5a65320a", // Your Web3Forms Access Key
+      // IMPORTANT: Replace with your actual Web3Forms Access Key
+      WEB3FORMS_ACCESS_KEY: "951c837b-2583-4a17-b896-758c5a65320a",
       subject: "New message from portfolio contact form",
       notyf: null, // Notyf instance will be initialized in mounted hook
-      SITE_KEY: '6LdgtZIrAAAAAG7QHntHbxhxUWFOHJQACKCfdyiZ', // Your reCAPTCHA v2 Site Key
+      // IMPORTANT: Replace with your actual reCAPTCHA v2 Site Key
+      SITE_KEY: '6LdgtZIrAAAAAG7QHntHbxhxUWFOHJQACKCfdyiZ',
       recaptchaWidgetId: null, // To store the ID of the rendered reCAPTCHA widget
       recaptchaToken: '', // To store the reCAPTCHA token after successful verification
     };
@@ -133,6 +135,7 @@ export default {
      */
     onRecaptchaExpired() {
       this.recaptchaToken = ''; // Clear the token
+      this.notyf.error('reCAPTCHA expired. Please re-verify.');
     },
 
     /**
@@ -147,14 +150,14 @@ export default {
       }
       // Ensure grecaptcha object is loaded
       if (!window.grecaptcha) {
-        console.error('Google reCAPTCHA script not loaded.');
+        console.error('Google reCAPTCHA script not loaded. Please add it to your index.html.');
         return;
       }
 
       // Render the reCAPTCHA widget
       this.recaptchaWidgetId = window.grecaptcha.render(recaptchaContainer, {
-        sitekey: this.SITE_KEY, 
-        size: 'normal', 
+        sitekey: this.SITE_KEY,
+        size: 'normal',
         callback: this.onRecaptchaSuccess, // Callback for successful verification
         'expired-callback': this.onRecaptchaExpired, // Callback for expired token
       });
@@ -164,7 +167,7 @@ export default {
      * Resets the reCAPTCHA widget, clearing the current token.
      */
     resetRecaptcha() {
-      if (this.recaptchaWidgetId !== null) {
+      if (this.recaptchaWidgetId !== null && window.grecaptcha) {
         window.grecaptcha.reset(this.recaptchaWidgetId);
         this.recaptchaToken = ''; // Also clear the internal token state
       }
@@ -187,7 +190,7 @@ export default {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Accept: "application/json",
+            "Accept": "application/json",
           },
           body: JSON.stringify({
             access_key: this.WEB3FORMS_ACCESS_KEY,
@@ -200,7 +203,7 @@ export default {
         });
         const result = await response.json();
 
-        if (result.success) {
+        if (response.ok && result.success) { // Check response.ok for HTTP success
           console.log("Form submission successful:", result);
           this.notyf.success("Message Sent!");
           // Clear form fields after successful submission
@@ -210,12 +213,14 @@ export default {
         } else {
           // Log the actual error from Web3Forms for debugging
           console.error("Web3Forms error:", result);
-          this.notyf.error("Failed to send message.");
+          // Provide more specific error message if available from Web3Forms
+          const errorMessage = result.message || "Failed to send message.";
+          this.notyf.error(errorMessage);
         }
       } catch (error) {
         // Log network or other unexpected errors
         console.error("Form submission error:", error);
-        this.notyf.error("Failed to send message.");
+        this.notyf.error("Failed to send message. Please try again later.");
       } finally {
         this.isLoading = false; // Always disable loading state
         this.resetRecaptcha(); // Reset reCAPTCHA regardless of outcome
@@ -259,5 +264,14 @@ export default {
   border-color: #00896f;
   box-shadow: 0 0 0 0.25rem rgba(0, 137, 111, 0.25);
   background-color: #ffffff;
+}
+
+/* Style for the reCAPTCHA placeholder */
+.recaptcha-placeholder {
+  min-height: 78px; /* Approximate height of reCAPTCHA widget */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* You can add a border or background here if you want a visual cue before it loads */
 }
 </style>
