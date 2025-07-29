@@ -15,10 +15,9 @@
 export default {
   name: 'ProjectCard',
   props: {
-    // Change props to accept a single 'project' object
     project: {
       type: Object,
-      required: true // It's good practice to mark required props
+      required: true
     }
   }
 }
@@ -33,14 +32,22 @@ export default {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  overflow: hidden; /* Added to contain the image scale effect */
-  background-color: #343a40; /* Set the card background color */
-  color: white; /* Ensure text is readable on the dark background */
+  overflow: hidden;
+  background-color: #343a40;
+  color: white;
+
+  /* --- Start: Changes for Bigger & Equal Sizing --- */
+  width: 320px; /* Set a fixed width for the card */
+  height: 400px; /* Set a fixed height for the card */
+  margin: 15px; /* Add some margin around cards for spacing */
+  /* --- End: Changes for Bigger & Equal Sizing --- */
 }
+
 .card:hover {
   transform: translateY(-5px);
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
 }
+
 .card-body {
   padding: 30px;
   flex-grow: 1;
@@ -49,35 +56,40 @@ export default {
   justify-content: space-between;
   position: relative;
 }
+
 .card-text {
-  max-height: 100px;
+  max-height: 100px; /* Keep max height for description for consistency */
   overflow-y: auto;
 }
+
 .card-img-top {
   width: 100%;
-  height: 200px;
-  object-fit: contain; /* Changed from 'cover' to 'contain' */
-  background-color: #f8f9fa; /* Optional: Add a background color for transparent images */
-  border-radius: 15px 15px 0 0; /* Keep top corners rounded */
-  transition: transform 0.5s ease-in-out; /* UI Improvement: Smoother transition */
+  height: 200px; /* Image height */
+  object-fit: contain;
+  background-color: #f8f9fa;
+  border-radius: 15px 15px 0 0;
+  transition: transform 0.5s ease-in-out;
 }
+
 .card:hover .card-img-top {
   transform: scale(1.1);
 }
-/* Ensure text colors are suitable for the dark background */
+
 .card-title {
   color: white;
 }
+
 .card-text {
-  color: #cccccc; /* Slightly lighter white for description */
-}
-.card-body a {
-  color: #007bff; /* Bootstrap primary blue for links */
-  border-color: #007bff;
-}
-.card-body a:hover {
-  color: #0056b3; /* Darker blue on hover for links */
-  border-color: #0056b3;
+  color: #cccccc;
 }
 
+.card-body a {
+  color: #007bff;
+  border-color: #007bff;
+}
+
+.card-body a:hover {
+  color: #0056b3;
+  border-color: #0056b3;
+}
 </style>
