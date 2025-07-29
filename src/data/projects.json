@@ -2,37 +2,37 @@
   {
     "image": "../../images/myProjects/1_project.svg",
     "title": "E-commerce API Documentation",
-    "description": "Dynamic E-Commerce Workflow Management. The system features dynamic routes for order processing, real-time inventory updates, and secure user authentication. It also supports seamless automated order reporting and comprehensive product management. Documented Backend API published publicly using Postman.",
+    "description": "Dynamic E-Commerce Workflow Management.",
     "link": "https://www.google.com"
   },
   {
     "image": "../../images/myProjects/2_project.svg",
     "title": "Course Booking API Documentation",
-    "description": "RESTful API for managing course enrollments, featuring user registration, authentication, and retrieval of user details. Supports course creation, updates, archiving, activation, and student enrollment. Publicly documented using Postman.",
+    "description": "RESTful API for managing course enrollment.",
     "link": "https://www.google.com"
   },
   {
     "image": "../../images/myProjects/3_project.svg",
-    "title": "Course booking App",
-    "description": "A MERN-stack course enrollment system featuring user registration, authentication, and profile management. Authenticated users can create, update, archive, and activate courses. The platform also allows users to browse available courses and enroll seamlessly.",
+    "title": "Course Booking App",
+    "description": "A MERN-stack course enrollment system for students.",
     "link": "https://www.google.com"
   },
   {
     "image": "../../images/myProjects/4_project.svg",
     "title": "E-commerce App",
-    "description": "MERN E-Commerce Platform. The platform features dynamic product catalog with filtering and sorting, real-time search, seamless cart updates, secure checkout, and a comprehensive admin dashboard with real-time analytics and user management capabilities.",
+    "description": "MERN E-Commerce Platform. The platform provides a.",
     "link": "https://www.google.com"
   },
   {
     "image": "../../images/myProjects/5_project.svg",
     "title": "Airline Booking System Mockup",
-    "description": "Side Project: Conceptual design showcasing an intuitive UI for flight search, seat selection, and booking confirmation, focusing on user experience and workflow efficiency.",
+    "description": "Side Project: Conceptual design of an airline booking.",
     "link": "https://www.google.com"
   },
   {
     "image": "../../images/myProjects/6_project.svg",
     "title": "Airline Booking System Prototype",
-    "description": "Side Project: Interactive prototype simulating end-to-end airline booking functionalities, including flight search, reservation, payment processing, and real-time ticket management.",
+    "description": "Side Project: Interactive prototype simulating an airline.",
     "link": "https://www.google.com"
   }
 ]
