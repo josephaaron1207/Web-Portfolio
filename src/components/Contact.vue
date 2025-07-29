@@ -1,122 +1,68 @@
 <template>
-  <div>
-    <div id="map" class="container-fluid">
+  <section id="contacts">
+    <div class="container my-5">
       <div class="row text-center mb-4">
-        <div class="col">
-          <h2 class="my-5">Visit Us!</h2>
+        <div class="col-12">
+          <h1>Let's Connect</h1>
         </div>
       </div>
-      <div class="row justify-content-center">
-        <div class="col-lg-8 m-4">
+
+      <div class="row flex-column flex-md-row text-center text-md-start">
+        <div class="col-md-6 mb-4 mb-md-0">
           <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15452.43988643541!2d121.00358374543454!3d14.47837411594325!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397ce7de2da5bbd%3A0xc4f1845e91886224!2sSM%20City%20Sucat!5e0!3m2!1sen!2sph!4v1750151542839!5m2!1sen!2sph"
-            width="100%"
-            height="400"
-            style="border: 0"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d123504.1482937747!2d120.9345330389333!3d14.685934005162424!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397b41dae605e5b%3A0x4258953c2333ea6a!2sCaloocan%2C%20Metro%20Manila!5e0!3m2!1sen!2sph!4v1722215160866!5m2!1sen!2sph"
+            class="map-frame w-100 rounded"
+            height="450"
             allowfullscreen=""
             loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
-          >
+            referrerpolicy="no-referrer-when-downgrade">
           </iframe>
+        </div>
+
+        <div class="col-md-6" id="form-col">
+          <form @submit.prevent="submitForm" class="form p-4 rounded text-light">
+            <div class="mb-3">
+              <label for="name" class="form-label">Name</label>
+              <input type="text" v-model="name" class="form-control" id="name" placeholder="Your Name">
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Email address</label>
+              <input type="email" v-model="email" class="form-control" id="email" placeholder="name@example.com">
+            </div>
+            <div class="mb-3">
+              <label for="message" class="form-label">Message</label>
+              <textarea v-model="message" class="form-control" id="message" rows="5"></textarea>
+            </div>
+
+            <div class="d-flex flex-wrap align-items-center justify-content-between">
+              <div class="d-flex gap-3 mb-3">
+                <a href="https://github.com/PeterJayson13" target="_blank"><img src="/images/Github.png" class="img-fluid social-icon" alt="GitHub"></a>
+                <a href="https://gitlab.com/peterbongabong7" target="_blank"><img src="/images/Gitlab.png" class="img-fluid social-icon" alt="GitLab"></a>
+                <a href="https://www.linkedin.com/in/peter-jayson-bongabong-b43793365/" target="_blank"><img src="/images/Linkedin.png" class="img-fluid social-icon" alt="LinkedIn"></a>
+              </div>
+              <div>
+                <button type="submit" class="submit-btn btn-custom" data-bs-toggle="modal" data-bs-target="#myModal" :disabled="isLoading">{{isLoading ? "Sending..." : "Submit"}}</button>
+
+                <div class="d-flex justify-content-end mt-2">
+                    <div ref="recaptchaContainer"></div>
+                </div>
+              </div>
+            </div>
+          </form>
         </div>
       </div>
     </div>
-    <section id="contact">
-      <div class="container">
-        <h2>Get In Touch</h2>
-        <div class="row justify-content-center text-center mb-4">
-          <div class="col-lg-8">
-            <div
-              class="contact-methods mb-5 d-flex flex-wrap justify-content-center"
-            >
-              <div id="phonenum" class="contact-item me-4 mb-3 mb-md-0">
-                <a
-                  href="mailto:josephaarond.bernardo@gmail.com"
-                  class="text-decoration-none text-success"
-                >
-                  <i
-                    class="fa-solid fa-envelope contact-icon-large d-block p-5 mx-5 text-success"
-                  ></i>
-                  <span class="contact-text">Email</span>
-                </a>
-              </div>
-              <div id="emailadd" class="contact-item">
-                <a
-                  href="tel:+639472600416"
-                  class="text-decoration-none text-success"
-                >
-                  <i
-                    class="fa-solid fa-phone contact-icon-large d-block p-5 mx-5 text-success"
-                  ></i>
-                  <span class="contact-text">Phone Number</span>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row justify-content-center mt-5">
-          <div class="col-lg-8">
-            <form @submit.prevent="submitForm">
-              <div class="mb-3">
-                <input
-                  type="text"
-                  v-model="form.name"
-                  class="form-control rounded-pill"
-                  id="name"
-                  placeholder="Your Name"
-                  required
-                />
-              </div>
-              <div class="mb-3">
-                <input
-                  type="email"
-                  v-model="form.email"
-                  class="form-control rounded-pill"
-                  id="email"
-                  placeholder="Your Email"
-                  required
-                />
-              </div>
-              <div class="mb-3">
-                <textarea
-                  class="form-control rounded-4"
-                  id="message"
-                  rows="5"
-                  v-model="form.message"
-                  placeholder="Your Message"
-                  required
-                ></textarea>
-              </div>
 
-              <div class="mb-3 d-flex justify-content-center">
-                <div class="g-recaptcha" :data-sitekey="recaptchaSiteKey"></div>
-              </div>
-
-              <div class="text-center mt-3">
-                <button
-                  type="submit"
-                  class="submit-btn btn-primary-custom"
-                  :disabled="isLoading"
-                >
-                  {{ isLoading ? "Sending..." : "Send Message" }}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </section>
-  </div>
+  </section>
 </template>
 
 <script setup>
-
     import { ref, onMounted, onBeforeUnmount } from 'vue';
     import { Notyf } from 'notyf';
     import 'notyf/notyf.min.css';
 
     const notyf = new Notyf();
-    const WEB3FORMS_ACCESS_KEY = "b40ddd06-4cec-4e0f-9f1e-6261b87d1125"; //replace with your access key
+    const WEB3FORMS_ACCESS_KEY = "31457fb4-8955-4f56-9efd-7684210a1b64";
 
     const subject = "New message from portfolio contact form";
 
@@ -126,22 +72,16 @@
 
     const isLoading = ref(false);
 
-    // The submitForm() handler function sends the form data to web3forms and displays success or failure notifications toast.
     const submitForm = async () => {
-
-        if(!recaptchaToken.value){
+        // Set the loading state to true.
+        if ( !recaptchaToken.value){
             notyf.error('Please verify that you are not a robot.');
             return;
         }
-
-        // Set the loading state to true.
         isLoading.value = true;
         try{
-            // Send the form data to web3forms using fetch() API.
-            // The fetch() API is used to send HTTP requests to a server.
-            // Sends a POST request to the https://api.web3forms.com/submit endpoint.
-            // The request body contains the form data and the web3forms access key.
-            const response = await fetch("https://api.web3forms.com/submit", {
+
+    const response = await fetch("https://api.web3forms.com/submit", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -156,126 +96,94 @@
                 }),
             });
             const result = await response.json();
-
-            // Check if the form submission was successful.
-            // If successful, display success notification toast.
             if (result.success) {
                 console.log(result);
                 // Set the loading state to false.
                 isLoading.value = false;
                 notyf.success("Message Sent!");
+                }
+            } catch (error) {
+                    console.log(error);
+                    isLoading.value = false;
+                    notyf.error("Failed to send message.");
+                } finally {
+                    resetRecaptcha();
+                }
             }
-        } catch (error) {
 
-            // If not successful, display failure notification toast.
-            console.log(error);
-            // Set the loading state to false.
-            isLoading.value = false;
-            notyf.error("Failed to send message.");
-        } finally {
-            resetRecaptcha();
+    const SITE_KEY = '6LdgtZIrAAAAAG7QHntHbxhxUWFOHJQACKCfdyiZ';  // Replace with your site key
+
+    const recaptchaContainer = ref(null);
+    const recaptchaWidgetId = ref(null);
+    const recaptchaToken = ref('');
+
+    // Callback called by reCAPTCHA when successful
+    function onRecaptchaSuccess(token) {
+      recaptchaToken.value = token;
+    }
+
+    // Callback when expired
+    function onRecaptchaExpired() {
+      recaptchaToken.value = '';
+    }
+
+    // Function to render the reCAPTCHA widget
+    function renderRecaptcha() {
+      if (!window.grecaptcha) {
+        console.error('reCAPTCHA not loaded');
+        return;
+      }
+
+      recaptchaWidgetId.value = window.grecaptcha.render(recaptchaContainer.value, {
+        sitekey: SITE_KEY,
+        size: 'normal', // or 'compact'
+        callback: onRecaptchaSuccess,
+        'expired-callback': onRecaptchaExpired,
+      });
+    }
+
+    // Function to reset reCAPTCHA 
+    function resetRecaptcha() {
+      if (recaptchaWidgetId.value !== null) {
+        window.grecaptcha.reset(recaptchaWidgetId.value);
+        recaptchaToken.value = '';
+      }
+    }
+
+    onMounted(() => {
+
+    const interval = setInterval(() => {
+        if (window.grecaptcha && window.grecaptcha.render) {
+          renderRecaptcha();
+          clearInterval(interval);
         }
-    }
+      }, 100);
 
-    /** 
- * 
- * reCaptcha Integration 
- * 
- */
-
-const SITE_KEY = '6LcB15IrAAAAAHswfIjrHiewwcTwKSEd8zTUVk56';  // Replace with your site key
-
-const recaptchaContainer = ref(null);
-const recaptchaWidgetId = ref(null);
-const recaptchaToken = ref('');
-
-// Callback called by reCAPTCHA when successful
-function onRecaptchaSuccess(token) {
-  recaptchaToken.value = token;
-}
-
-// Callback when expired
-function onRecaptchaExpired() {
-  recaptchaToken.value = '';
-}
-
-// Function to render the reCAPTCHA widget
-function renderRecaptcha() {
-  if (!window.grecaptcha) {
-    console.error('reCAPTCHA not loaded');
-    return;
-  }
-
-  recaptchaWidgetId.value = window.grecaptcha.render(recaptchaContainer.value, {
-    sitekey: SITE_KEY,
-    size: 'normal', // or 'compact'
-    callback: onRecaptchaSuccess,
-    'expired-callback': onRecaptchaExpired,
-  });
-}
-
-// Function to reset reCAPTCHA 
-function resetRecaptcha() {
-  if (recaptchaWidgetId.value !== null) {
-    window.grecaptcha.reset(recaptchaWidgetId.value);
-    recaptchaToken.value = '';
-  }
-}
+      onBeforeUnmount(() => {
+        clearInterval(interval);
+      });
+    });
 
 
-
-onMounted(() => {
-  // This code waits for the Google reCAPTCHA library to load, then renders the reCAPTCHA widget using onMounted hook. 
-  // The widget is rendered with grecaptcha.render(), which requires a sitekey. 
-  // Callback functions handle success and expiration events. 
-  // reCAPTCHA is reset upon form submission to clear the token.
-  const interval = setInterval(() => {
-    if (window.grecaptcha && window.grecaptcha.render) {
-      renderRecaptcha();
-      clearInterval(interval);
-    }
-  }, 100);
-
-  onBeforeUnmount(() => {
-    clearInterval(interval);
-  });
-});
-    
 </script>
 
 <style scoped>
-/* Scoped styles for this component */
-#contact {
-  background-color: #343a40;
-  border-radius: 40px;
-  padding: 80px 0;
-  border-bottom: 1px solid #e9ecef;
+.form {
+  background-color: darkgray;
+}
+.social-icon {
+  height: 40px;
+}
+.map-frame {
+  border: 0;
+}
+.btn-custom {
+  background-color: #fb5607;
   color: white;
+  border: 1px solid #fb5607;
 }
-#contact h2 {
-  color: #00896f;
-  font-weight: 700;
-  margin-bottom: 40px;
-  text-align: center;
-  position: relative;
-  padding-bottom: 10px;
-}
-#map {
-  color: #343a40;
-  background-color: #00896f;
-  border-radius: 40px;
-}
-#map h2 {
-  color: #343a40;
-}
-.contact-icon-large {
-  font-size: 5rem;
-}
-
-/* UI Improvement: Form focus state */
-.form-control:focus {
-  border-color: #00896f;
-  box-shadow: 0 0 0 0.25rem rgba(0, 137, 111, 0.25);
-  background-color: #ffffff;
+.btn-custom:hover {
+  background-color: #d94a06;
+  border: 1px solid #d94a06;
 }
 </style>
