@@ -171,12 +171,15 @@ export default {
      * Handles the form submission process.
      * Sends form data and reCAPTCHA token to Web3Forms.
      */
-    async submitForm() {
-    // Prevent form submission if reCAPTCHA hasn't been verified
+    // ... inside submitForm() method ...
+async submitForm() {
+    // 1. Log the reCAPTCHA token BEFORE the check
+    console.log("DEBUG: recaptchaToken value before check:", this.recaptchaToken);
+
     if (!this.recaptchaToken) {
         this.notyf.error('Please verify that you are not a robot.');
-        console.log("reCAPTCHA token is missing, stopping submission."); // <-- Add this
-        return;
+        console.error("ERROR: reCAPTCHA token is missing or empty. Aborting submission.");
+        return; // Stop the function execution
     }
 
     this.isLoading = true; // Show loading state
@@ -188,10 +191,13 @@ export default {
             email: this.form.email,
             message: this.form.message,
             "g-recaptcha-response": this.recaptchaToken, // Include the reCAPTCHA token
+            // Add a hidden field for reCAPTCHA v2 if you are on an older Web3Forms setup
+            // This is usually not needed for v2 checkbox, but good to keep in mind
+            // "h-captcha-response": this.recaptchaToken // If you mistakenly picked H-Captcha
         };
 
-        console.log("Sending payload to Web3Forms:", JSON.stringify(payload, null, 2)); // <-- Add this for full payload
-        console.log("reCAPTCHA token being sent:", this.recaptchaToken); // <-- Add this for token inspection
+        // 2. Log the full payload being sent
+        console.log("DEBUG: Payload being sent to Web3Forms:", JSON.stringify(payload, null, 2));
 
         const response = await fetch("https://api.web3forms.com/submit", {
             method: "POST",
@@ -201,29 +207,39 @@ export default {
             },
             body: JSON.stringify(payload),
         });
+
+        // 3. Log the raw response status and text if there's an issue
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error(`ERROR: Web3Forms HTTP error! Status: ${response.status}, Response text: ${errorText}`);
+            this.notyf.error(`Failed to send message: ${errorText.substring(0, 50)}...`); // Show a short part of the error
+            this.isLoading = false;
+            this.resetRecaptcha();
+            return; // Stop here if response is not OK
+        }
+
         const result = await response.json();
 
         if (result.success) {
-          console.log("Form submission successful:", result);
-          this.notyf.success("Message Sent!");
-          // Clear form fields after successful submission
-          this.form.name = '';
-          this.form.email = '';
-          this.form.message = '';
+            console.log("SUCCESS: Form submission successful:", result);
+            this.notyf.success("Message Sent!");
+            this.form.name = '';
+            this.form.email = '';
+            this.form.message = '';
         } else {
-          // Log the actual error from Web3Forms for debugging
-          console.error("Web3Forms error:", result);
-          this.notyf.error("Failed to send message.");
+            // Log the actual error from Web3Forms for debugging
+            console.error("ERROR: Web3Forms API returned success: false. Details:", result);
+            this.notyf.error("Failed to send message. Please check console for details.");
         }
-      } catch (error) {
+    } catch (error) {
         // Log network or other unexpected errors
-        console.error("Form submission error:", error);
-        this.notyf.error("Failed to send message.");
-      } finally {
+        console.error("FATAL ERROR: Form submission catch block error:", error);
+        this.notyf.error("An unexpected error occurred.");
+    } finally {
         this.isLoading = false; // Always disable loading state
         this.resetRecaptcha(); // Reset reCAPTCHA regardless of outcome
-      }
     }
+}
   }
 };
 </script>
