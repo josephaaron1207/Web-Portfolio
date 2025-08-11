@@ -36,11 +36,10 @@ export default {
   background-color: #343a40;
   color: white;
 
-  /* --- Start: Changes for Bigger & Equal Sizing --- */
-  width: 320px; /* Set a fixed width for the card */
-  height: 400px; /* Set a fixed height for the card */
-  margin: 15px; /* Add some margin around cards for spacing */
-  /* --- End: Changes for Bigger & Equal Sizing --- */
+  /* Equal sizing but slightly taller */
+  width: 320px; 
+  height: 430px; /* increased from 400px */
+  margin: 15px;
 }
 
 .card:hover {
@@ -50,21 +49,26 @@ export default {
 
 .card-body {
   padding: 30px;
-  flex-grow: 1;
+  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  position: relative;
 }
 
 .card-text {
-  max-height: 100px; /* Keep max height for description for consistency */
-  overflow-y: auto;
+  overflow-y: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  min-height: 80px; 
+  max-height: 80px; 
+  color: #cccccc;
 }
 
 .card-img-top {
   width: 100%;
-  height: 200px; /* Image height */
+  height: 200px; 
   object-fit: contain;
   background-color: #f8f9fa;
   border-radius: 15px 15px 0 0;
@@ -79,17 +83,14 @@ export default {
   color: white;
 }
 
-.card-text {
-  color: #cccccc;
-}
-
+/* Green outline + green text for button */
 .card-body a {
-  color: #007bff;
-  border-color: #007bff;
+  color: #28a745;
+  border-color: #28a745;
 }
 
 .card-body a:hover {
-  color: #0056b3;
-  border-color: #0056b3;
+  color: #1e7e34;
+  border-color: #1e7e34;
 }
 </style>

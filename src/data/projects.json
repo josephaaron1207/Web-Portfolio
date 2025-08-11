@@ -1,38 +1,50 @@
 [
   {
-    "image": "/images/myProjects/1_project.svg",
-    "title": "E-commerce API Documentation",
-    "description": "Dynamic E-Commerce Workflow Management.",
-    "link": "https://www.google.com"
-  },
-  {
     "image": "/images/myProjects/2_project.svg",
-    "title": "Course Booking API Documentation",
-    "description": "RESTful API for managing course enrollment.",
-    "link": "https://www.google.com"
+    "title": "E-commerce API Documentation",
+    "description": "Dynamic E-Commerce Workflow with order processing, real-time inventory updates, secure authentication, automated reporting, and full product management. Publicly documented API available on Postman.",
+    "link": "https://documenter.getpostman.com/view/46298084/2sB34hEzKx"
   },
   {
     "image": "/images/myProjects/3_project.svg",
-    "title": "Course Booking App",
-    "description": "A MERN-stack course enrollment system for students.",
-    "link": "https://www.google.com"
-  },
-  {
-    "image": "/images/myProjects/4_project.svg",
     "title": "E-commerce App",
-    "description": "MERN E-Commerce Platform. The platform provides a.",
-    "link": "https://www.google.com"
+    "description": "MERN E-Commerce Platform. The platform features dynamic product catalog with filtering and sorting, real-time search, seamless cart updates, secure checkout, and a comprehensive admin dashboard with real-time analytics and user management capabilities.",
+    "link": "http://zuitt-bootcamp-prod-560-8928-bongabong.s3-website.us-east-1.amazonaws.com/"
   },
   {
-    "image": "/images/myProjects/5_project.svg",
-    "title": "Airline Booking System Mockup",
-    "description": "Side Project: Conceptual design of an airline booking.",
-    "link": "https://www.google.com"
+    "image": "/images/myProjects/Fitness Documentation.svg",
+    "title": "Fitness API Documentation",
+    "description": "Fitness API Documentation outlines endpoints for user management, authentication, and workout tracking, with examples and error handling. The API is deployed on Render and is publicly available on Postman.",
+    "link": "https://documenter.getpostman.com/view/45081082/2sB3BEoAPs"
   },
   {
-    "image": "/images/myProjects/6_project.svg",
-    "title": "Airline Booking System Prototype",
-    "description": "Side Project: Interactive prototype simulating an airline.",
-    "link": "https://www.google.com"
+    "image": "/images/myProjects/FitnessAPP.svg",
+    "title": "Fitness Workout Tracker App",
+    "description": "Fitness Workout Tracker App lets users log workouts, monitor progress, and set fitness goals with ease. It offers real-time updates and a simple interface to keep training consistent and motivating.",
+    "link": "https://fitness-tracker-frontend-rose.vercel.app/"
+  },
+  {
+    "image": "/images/myProjects/Movie Documentation.svg",
+    "title": "Movie Catalog API Documentation",
+    "description": "Movie Catalog API Documentation details endpoints for managing movies, user authentication, and comments, with request/response examples and error handling. The API is deployed on Render and publicly available on Postman for easy testing and integration.",
+    "link": "https://documenter.getpostman.com/view/45081082/2sB3BEoAPz"
+  },
+  {
+    "image": "/images/myProjects/Movie APP.svg",
+    "title": "Movie Catalog App",
+    "description": "Movie Catalog App allows users to browse, search, and comment on movies with an intuitive and responsive design. It is deployed on Vercel, ensuring fast load times and reliable performance.",
+    "link": "https://movie-catalog-app-weld.vercel.app/"
+  },
+   {
+    "image": "/images/myProjects/Blog Documentation.svg",
+    "title": "Blog Post API Documentation",
+    "description": "Blog API provides endpoints for managing blog posts, user authentication, and comments, complete with examples and error handling. Deployed on Render, it is publicly available on Postman for easy testing and integration.",
+    "link": "https://documenter.getpostman.com/view/45081082/2sB3BEoAYh"
+  },
+   {
+    "image": "/images/myProjects/Blog APP.svg",
+    "title": "Blog Post App",
+    "description": "Blog Post App allows users to share their travel experiences, read inspiring stories, and engage through comments. It features a clean, responsive design for easy navigation on any device. Deployed on Vercel, it ensures fast performance and a smooth user experience.",
+    "link": "https://blogpost-client-sage.vercel.app/"
   }
 ]
