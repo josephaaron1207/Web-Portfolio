@@ -46,5 +46,17 @@
     "title": "Blog Post App",
     "description": "Blog Post App allows users to share their travel experiences, read inspiring stories, and engage through comments. It features a clean, responsive design for easy navigation on any device. Deployed on Vercel, it ensures fast performance and a smooth user experience.",
     "link": "https://blogpost-client-sage.vercel.app/"
+  },
+   {
+    "image": "/images/myProjects/7.svg",
+    "title": "Static E-Commerce Page",
+    "description": "Sample static homepage for a Aloe-vera products E-Commerce Store, featuring product highlights, categories, and a clean, modern layout.",
+    "link": "https://josephaaron1207.github.io/home-page-exam/"
+  },
+  {
+    "image": "/images/myProjects/8.svg",
+    "title": "Coding Educational Platform Homepage",
+    "description": "Sample static homepage for a Robo-Tech Educational Platform using a static webpage design. It highlights featured courses, learning categories, and key program details in a clean, modern layout. The design aims to provide an engaging and easy-to-navigate experience for learners.",
+    "link": "https://josephaaron1207.github.io/Educational-Hub/"
   }
 ]
